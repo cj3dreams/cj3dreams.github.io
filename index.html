@@ -17,9 +17,9 @@
 }
 
 @media (max-width:768px){
-  .hero h1{font-size:17vw;}   /* Увеличил CJ3DREAMS в мобилке */
-  .hero p{font-size:0.9rem;}  /* Уменьшил подпись */
-  footer{gap:8px; font-size:0.7rem;} /* Меньше текст в footer */
+  .hero h1{font-size:17vw;}
+  .hero p{font-size:0.9rem;}
+  footer{gap:8px; font-size:0.7rem;}
   .flags img{width:18px;height:12px;}
 }
 
@@ -42,7 +42,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 }
 
 .hero h1 {
-  font-size:7vw;   /* Увеличил на ПК */
+  font-size:7vw;
   font-weight:900;
   letter-spacing:0.2em;
   color:#00ffff;
@@ -64,7 +64,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 
 .hero p {
   font-family: 'Press Start 2P', monospace;
-  font-size:0.95rem; margin-top:0.3rem; /* Чуть уменьшил */
+  font-size:0.85rem; margin-top:0.3rem;
   color:#aaa; opacity:0; transform:translateY(15px);
   animation:fadeIn 2s 2s forwards;
   position: relative;
@@ -79,7 +79,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 }
 
 .hero small {
-  font-family: 'Telegrama', monospace;  display: block;
+  font-family: 'Telegrama', monospace; display: block;
   font-size: 0.85rem; color: #555; margin-top: 16px; max-width: 600px;
   text-align: center;
 }
@@ -215,31 +215,26 @@ animate();
 window.addEventListener('resize', ()=>{ createStars(); });
 
 const bgMusic = document.getElementById("bg-music");
+bgMusic.volume = 0;
 
-function fadeAudio(audio, fadeIn = true, duration = 2000) {
-  let step = 0.05;
-  let interval = duration / (1/step);
-  if (fadeIn) {
-    audio.volume = 0;
-    audio.play().catch(()=>{});
-    let fade = setInterval(() => {
-      if (audio.volume < 1) audio.volume = Math.min(1, audio.volume + step);
-      else clearInterval(fade);
-    }, interval);
-  } else {
-    let fade = setInterval(() => {
-      if (audio.volume > 0) audio.volume = Math.max(0, audio.volume - step);
-      else { audio.pause(); clearInterval(fade); }
-    }, interval);
-  }
+let fadeDirection = 1; 
+const fadeSpeed = 0.0015; 
+function fadeAudio() {
+  bgMusic.volume += fadeDirection * fadeSpeed;
+  if(bgMusic.volume >= 1) fadeDirection = -1;
+  if(bgMusic.volume <= 0) fadeDirection = 1;
+  requestAnimationFrame(fadeAudio);
 }
 
 function startMusic() {
-  fadeAudio(bgMusic, true, 1500);
+  bgMusic.play().catch(()=>{});
+  fadeAudio();
+  document.body.removeEventListener("click", startMusic);
+  document.body.removeEventListener("wheel", startMusic);
 }
+
 document.body.addEventListener("click", startMusic, { once:true });
 document.body.addEventListener("wheel", startMusic, { once:true });
-
 
 const glitchText = document.getElementById('glitch-text');
 const originalText = glitchText.textContent;
