@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cj3dreams</title>
+<style>
+body, html {
+  margin:0; padding:0;
+  font-family: 'Poppins', sans-serif;
+  background:#000;
+  color:#fff;
+  overflow-x:hidden;
+  position: relative;
+}
+
+canvas { position: fixed; top:0; left:0; z-index:0; }
+
+.hero {
+  position: relative; z-index:1;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  height:100vh; text-align:center; padding:0 20px;
+}
+
+.hero h1 {
+  font-size:6vw; font-weight:900; letter-spacing:0.2em;
+  color:#00ffff; text-transform:uppercase;
+  opacity:0; transform:translateY(-50px);
+  animation:slideIn 2s forwards, fadeCosmos 10s infinite;
+}
+
+.hero p {
+  font-size:1.4rem; margin-top:0.3rem;
+  color:#aaa; opacity:0; transform:translateY(15px);
+  animation:fadeIn 2s 2s forwards;
+}
+
+.hero small {
+  display:block; font-size:0.8rem; color:#555;
+  margin-top:3px; max-width:600px; text-align:center;
+}
+
+.cursor-blink::after {
+  content:"|";
+  animation: blink 1s steps(1) infinite;
+  margin-left:2px;
+}
+
+@keyframes slideIn { to {opacity:1; transform:translateY(0);} }
+@keyframes fadeIn { to {opacity:1; transform:translateY(0);} }
+@keyframes blink { 50% {opacity:0;} }
+@keyframes fadeCosmos { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+
+footer {
+  position: fixed; bottom:0; width:100%;
+  background:#111; padding:15px 0;
+  display:flex; justify-content:center; gap:25px;
+  font-size:0.9rem; letter-spacing:0.05em; color:#888; z-index:1;
+}
+footer span:hover { color:#00ffff; cursor:pointer; transition:0.3s; }
+
+.flags {
+  position: fixed; top:10px; right:10px;
+  display:flex; flex-direction:column;
+  gap:4px; align-items:flex-end; z-index:1;
+}
+.flags small { color:#555; margin-bottom:4px; font-size:0.75rem; }
+.flags img { width:21px; height:14px; opacity:0.75; border-radius:3px; transition: transform 0.3s; }
+.flags img:hover { transform: scale(1.2); }
+
+.info-cards {
+  position: absolute; left:50%; transform:translateX(-50%);
+  bottom:60px; display:flex; flex-direction:column; gap:4px;
+  z-index:1; align-items:center; color:#888; font-size:0.85rem;
+  text-align:center;
+}
+.info-cards div { cursor: pointer; transition: color 0.3s; }
+.info-cards div:hover { color: #00ffff; }
+
+@media (max-width:768px){
+  .hero h1{font-size:12vw;}
+  .hero p{font-size:1.2rem;}
+  footer{gap:12px; font-size:0.8rem;}
+  .flags img{width:18px;height:12px;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="hero">
+  <h1>CJ3DREAMS</h1>
+  <p>a cj & 3 dreams chaser</p>
+  <small class="cursor-blink">cj = computer jockey — anyone that uses a computer for their job or is overly zealous in their personal use of said computer.</small>
+</div>
+
+<div class="flags">
+  <small>My Visited Countries Tracker:</small>
+  <img src="https://flagcdn.com/de.svg" alt="Germany">
+  <img src="https://flagcdn.com/dk.svg" alt="Denmark">
+  <img src="https://flagcdn.com/fr.svg" alt="France">
+  <img src="https://flagcdn.com/kz.svg" alt="Kazakhstan">
+  <img src="https://flagcdn.com/tj.svg" alt="Tajikistan">
+  <img src="https://flagcdn.com/tr.svg" alt="Turkey">
+  <img src="https://flagcdn.com/uz.svg" alt="Uzbekistan">
+  <img src="https://flagcdn.com/us.svg" alt="USA">
+</div>
+
+<footer>
+  <span>audio</span>
+  <span>video</span>
+  <span>photo</span>
+  <span>coding</span>
+  <span>moding</span>
+  <span>crafting</span>
+</footer>
+
+<div class="info-cards">
+  <div onclick="window.location='mailto:by@cj3dreams.me'">by@cj3dreams.me</div>
+  <div onclick="window.location='tel:+12244440644'">+1 (224) 444-0644</div>
+</div>
+
+<script>
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+
+let stars = [];
+function createStars() {
+  const w = canvas.width = window.innerWidth;
+  const h = canvas.height = window.innerHeight;
+  const starsCount = Math.floor((w*h)/5000);
+  stars = [];
+  for(let i=0;i<starsCount;i++){
+    stars.push({x:Math.random()*w, y:Math.random()*h, r:Math.random()*1.2, d:Math.random()*0.5+0.1});
+  }
+}
+createStars();
+
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = 'white';
+  ctx.beginPath();
+  stars.forEach(s=>{
+    ctx.moveTo(s.x,s.y);
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+  });
+  ctx.fill();
+  updateStars();
+}
+
+function updateStars(){
+  stars.forEach(s=>{
+    s.y += s.d*0.2;
+    if(s.y>canvas.height) s.y=0;
+  });
+}
+
+function animate(){
+  drawStars();
+  requestAnimationFrame(animate);
+}
+animate();
+
+window.addEventListener('resize', ()=>{
+  createStars(); 
+});
+</script>
+
+</body>
+</html>
