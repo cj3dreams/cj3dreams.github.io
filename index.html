@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>cj3dreams</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
 <style>
-
 @keyframes slideIn { to {opacity:1; transform:translateY(0);} }
 @keyframes fadeIn { to {opacity:1; transform:translateY(0);} }
 @keyframes blink { 50% {opacity:0;} }
@@ -215,26 +215,7 @@ animate();
 window.addEventListener('resize', ()=>{ createStars(); });
 
 const bgMusic = document.getElementById("bg-music");
-bgMusic.volume = 0;
-
-let fadeDirection = 1; 
-const fadeSpeed = 0.0015; 
-function fadeAudio() {
-  bgMusic.volume += fadeDirection * fadeSpeed;
-  if(bgMusic.volume >= 1) fadeDirection = -1;
-  if(bgMusic.volume <= 0) fadeDirection = 1;
-  requestAnimationFrame(fadeAudio);
-}
-
-function startMusic() {
-  bgMusic.play().catch(()=>{});
-  fadeAudio();
-  document.body.removeEventListener("click", startMusic);
-  document.body.removeEventListener("wheel", startMusic);
-}
-
-document.body.addEventListener("click", startMusic, { once:true });
-document.body.addEventListener("wheel", startMusic, { once:true });
+document.body.addEventListener("click", ()=>{ bgMusic.play().catch(()=>{}); }, { once:true });
 
 const glitchText = document.getElementById('glitch-text');
 const originalText = glitchText.textContent;
