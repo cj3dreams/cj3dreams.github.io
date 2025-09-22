@@ -17,9 +17,9 @@
 }
 
 @media (max-width:768px){
-  .hero h1{font-size:15vw;}   /* Увеличил CJ3DREAMS */
-  .hero p{font-size:1rem;}
-  footer{gap:10px; font-size:0.75rem;} /* Сделал меньше текст в footer */
+  .hero h1{font-size:17vw;}   /* Увеличил CJ3DREAMS в мобилке */
+  .hero p{font-size:0.9rem;}  /* Уменьшил подпись */
+  footer{gap:8px; font-size:0.7rem;} /* Меньше текст в footer */
   .flags img{width:18px;height:12px;}
 }
 
@@ -42,7 +42,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 }
 
 .hero h1 {
-  font-size:6vw;
+  font-size:7vw;   /* Увеличил на ПК */
   font-weight:900;
   letter-spacing:0.2em;
   color:#00ffff;
@@ -64,7 +64,7 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 
 .hero p {
   font-family: 'Press Start 2P', monospace;
-  font-size:1.0rem; margin-top:0.3rem;
+  font-size:0.95rem; margin-top:0.3rem; /* Чуть уменьшил */
   color:#aaa; opacity:0; transform:translateY(15px);
   animation:fadeIn 2s 2s forwards;
   position: relative;
@@ -92,9 +92,9 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 
 footer {
   position: fixed; bottom:0; width:100%;
-  background:#111; padding:12px 0;
-  display:flex; justify-content:center; gap:25px;
-  font-size:1rem; letter-spacing:0.05em; color:#888; z-index:1;
+  background:#111; padding:10px 0;
+  display:flex; justify-content:center; gap:20px;
+  font-size:0.85rem; letter-spacing:0.05em; color:#888; z-index:1;
 }
 footer span:hover { color:#00ffff; cursor:pointer; transition:0.3s; }
 
@@ -214,13 +214,33 @@ animate();
 
 window.addEventListener('resize', ()=>{ createStars(); });
 
-// === FIX AUTOPLAY ===
 const bgMusic = document.getElementById("bg-music");
-document.body.addEventListener("click", () => {
-  bgMusic.play().catch(()=>{});
-}, { once:true });
 
-// === GLITCH EFFECT ===
+function fadeAudio(audio, fadeIn = true, duration = 2000) {
+  let step = 0.05;
+  let interval = duration / (1/step);
+  if (fadeIn) {
+    audio.volume = 0;
+    audio.play().catch(()=>{});
+    let fade = setInterval(() => {
+      if (audio.volume < 1) audio.volume = Math.min(1, audio.volume + step);
+      else clearInterval(fade);
+    }, interval);
+  } else {
+    let fade = setInterval(() => {
+      if (audio.volume > 0) audio.volume = Math.max(0, audio.volume - step);
+      else { audio.pause(); clearInterval(fade); }
+    }, interval);
+  }
+}
+
+function startMusic() {
+  fadeAudio(bgMusic, true, 1500);
+}
+document.body.addEventListener("click", startMusic, { once:true });
+document.body.addEventListener("wheel", startMusic, { once:true });
+
+
 const glitchText = document.getElementById('glitch-text');
 const originalText = glitchText.textContent;
 glitchText.innerHTML = originalText.split('').map(c => `<span>${c}</span>`).join('');
