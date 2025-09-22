@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>cj3dreams</title>
 <style>
+
+@keyframes slideIn { to {opacity:1; transform:translateY(0);} }
+@keyframes fadeIn { to {opacity:1; transform:translateY(0);} }
+@keyframes blink { 50% {opacity:0;} }
+@keyframes fadeCosmos { 0%,100%{opacity:1;} 50%{opacity:0.9;} }
+
+@keyframes pulse {
+  0%,100% { color:#888; }
+  50% { color:#00ffff; }
+}
+
+@media (max-width:768px){
+  .hero h1{font-size:12vw;}
+  .hero p{font-size:1rem;}
+  footer{gap:12px; font-size:0.9rem;}
+  .flags img{width:18px;height:12px;}
+}
+
 body, html {
   margin:0; padding:0;
   font-family: 'Poppins', sans-serif;
@@ -24,88 +42,121 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
 }
 
 .hero h1 {
-  font-size:6vw; font-weight:900; letter-spacing:0.2em;
-  color:#00ffff; text-transform:uppercase;
-  opacity:0; transform:translateY(-50px);
-  animation:slideIn 2s forwards, fadeCosmos 10s infinite;
+  font-size:6vw;
+  font-weight:900;
+  letter-spacing:0.2em;
+  color:#00ffff;
+  text-transform:uppercase;
+  opacity:0.9;
+  animation: fadeSlideIn 2s ease-out forwards, pulseOpacity 12s ease-in-out infinite;
+}
+
+@keyframes fadeSlideIn {
+  0% { opacity:0; transform: translateY(-50px); }
+  50% { opacity:1; transform: translateY(20px); }
+  100% { opacity:1; transform: translateY(0); }
+}
+@keyframes pulseOpacity {
+  0%,20%   { opacity:0.9; } 
+  50%      { opacity:0.5; } 
+  80%,95% { opacity:0.9; } 
 }
 
 .hero p {
-  font-size:1.4rem; margin-top:0.3rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size:1.0rem; margin-top:0.3rem;
   color:#aaa; opacity:0; transform:translateY(15px);
   animation:fadeIn 2s 2s forwards;
+  position: relative;
+  transition: color 0.1s, left 0.1s, top 0.1s;
+}
+
+@font-face {
+    font-family: 'Telegrama';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Telegrama'), url('https://fonts.cdnfonts.com/s/26438/telegraw.woff') format('woff');
 }
 
 .hero small {
-  display:block; font-size:0.8rem; color:#555;
-  margin-top:3px; max-width:600px; text-align:center;
+  font-family: 'Telegrama', monospace;  display: block;
+  font-size: 0.85rem; color: #555; margin-top: 16px; max-width: 600px;
+  text-align: center;
 }
 
 .cursor-blink::after {
-  content:"|";
+  content:"/";
   animation: blink 1s steps(1) infinite;
-  margin-left:2px;
+  margin-left:1px;
 }
 
-@keyframes slideIn { to {opacity:1; transform:translateY(0);} }
-@keyframes fadeIn { to {opacity:1; transform:translateY(0);} }
-@keyframes blink { 50% {opacity:0;} }
-@keyframes fadeCosmos { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
 
 footer {
   position: fixed; bottom:0; width:100%;
   background:#111; padding:15px 0;
   display:flex; justify-content:center; gap:25px;
-  font-size:0.9rem; letter-spacing:0.05em; color:#888; z-index:1;
+  font-size:1rem; letter-spacing:0.05em; color:#888; z-index:1;
 }
 footer span:hover { color:#00ffff; cursor:pointer; transition:0.3s; }
 
 .flags {
   position: fixed; top:10px; right:10px;
   display:flex; flex-direction:column;
-  gap:4px; align-items:flex-end; z-index:1;
+  gap:5px; align-items:flex-end; z-index:1;
 }
-.flags small { color:#555; margin-bottom:4px; font-size:0.75rem; }
-.flags img { width:21px; height:14px; opacity:0.75; border-radius:3px; transition: transform 0.3s; }
-.flags img:hover { transform: scale(1.2); }
+.flags small {
+  color:#888; margin-bottom:4px; font-size:0.85rem;
+  text-transform: lowercase;
+  animation: pulse 3s infinite;
+}
+.flags img { 
+  width:21px; 
+  height:14px; 
+  opacity:0.82; 
+  border-radius:4px; 
+  transition: transform 0.3s; 
+}
+.flags img:hover { transform: scale(1.5); }
+
 
 .info-cards {
-  position: absolute; left:50%; transform:translateX(-50%);
-  bottom:60px; display:flex; flex-direction:column; gap:4px;
-  z-index:1; align-items:center; color:#888; font-size:0.85rem;
+  position: fixed; left:50%; transform:translateX(-50%);
+  bottom:90px; display:flex; flex-direction:column; gap:4px;
+  z-index:1; align-items:center; color:#888; font-size:0.9rem;
   text-align:center;
 }
 .info-cards div { cursor: pointer; transition: color 0.3s; }
 .info-cards div:hover { color: #00ffff; }
 
-@media (max-width:768px){
-  .hero h1{font-size:12vw;}
-  .hero p{font-size:1.2rem;}
-  footer{gap:12px; font-size:0.8rem;}
-  .flags img{width:18px;height:12px;}
-}
 </style>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
+
+<audio autoplay loop>
+  <source src="audio.mp3" type="audio/mpeg">
+  <source src="audio.ogg" type="audio/ogg">
+</audio>
 
 <canvas id="stars"></canvas>
 
 <div class="hero">
   <h1>CJ3DREAMS</h1>
-  <p>a cj & 3 dreams chaser</p>
-  <small class="cursor-blink">cj = computer jockey — anyone that uses a computer for their job or is overly zealous in their personal use of said computer.</small>
+  <p id="glitch-text">a cj & 3 dreams chaser</p>
+  <small class="cursor-blink">cj = computer jockey — anyone that uses a computer for their job or is overly zealous in their personal use of said computer</small>
 </div>
 
 <div class="flags">
-  <small>My Visited Countries Tracker:</small>
-  <img src="https://flagcdn.com/de.svg" alt="Germany">
-  <img src="https://flagcdn.com/dk.svg" alt="Denmark">
-  <img src="https://flagcdn.com/fr.svg" alt="France">
-  <img src="https://flagcdn.com/kz.svg" alt="Kazakhstan">
-  <img src="https://flagcdn.com/tj.svg" alt="Tajikistan">
-  <img src="https://flagcdn.com/tr.svg" alt="Turkey">
-  <img src="https://flagcdn.com/uz.svg" alt="Uzbekistan">
-  <img src="https://flagcdn.com/us.svg" alt="USA">
+  <small>my visited countries tracker:</small>
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/de.svg" alt="Germany">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/dk.svg" alt="Denmark">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/fr.svg" alt="France">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/kz.svg" alt="Kazakhstan">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/tj.svg" alt="Tajikistan">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/tr.svg" alt="Turkey">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/uz.svg" alt="Uzbekistan">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" alt="USA">
 </div>
 
 <footer>
@@ -163,9 +214,60 @@ function animate(){
 }
 animate();
 
-window.addEventListener('resize', ()=>{
-  createStars(); 
-});
+window.addEventListener('resize', ()=>{ createStars(); });
+
+const glitchText = document.getElementById('glitch-text');
+const originalText = glitchText.textContent;
+glitchText.innerHTML = originalText.split('').map(c => `<span>${c}</span>`).join('');
+
+const spans = glitchText.querySelectorAll('span');
+
+function applyGlitch() {
+  glitchText.style.background = 'linear-gradient(90deg, #fff 20%, #aaa 50%, #fff 80%)';
+  glitchText.style.backgroundClip = 'text';
+  glitchText.style.webkitBackgroundClip = 'text';
+  glitchText.style.color = 'transparent';
+
+  spans.forEach(span => {
+    if(Math.random() < 0.15) { 
+      const x = (Math.random()-0.3) * 2.1; 
+      const y = (Math.random()-0.4) * 2.1;
+      const gray = Math.floor(Math.random() * 100 + 150);
+      span.style.position = 'relative';
+      span.style.left = `${x}px`;
+      span.style.top = `${y}px`;
+      span.style.color = `rgb(${gray},${gray},${gray})`;
+    } else {
+      span.style.left = '1px';
+      span.style.top = '0px';
+      span.style.color = '#aaa';
+    }
+  });
+}
+
+function resetGlitch() {
+  glitchText.style.background = 'none';
+  glitchText.style.color = '#aaa';
+  spans.forEach(span => {
+    span.style.left = '0px';
+    span.style.top = '0px';
+    span.style.color = '#aaa';
+  });
+}
+
+function glitchBurst(times=3, delay=120) {
+  if(times <= 0) {
+    setTimeout(() => glitchBurst(3, delay), 500 + Math.random()*1000); // пауза 2-3 сек
+    return;
+  }
+  applyGlitch();
+  setTimeout(() => {
+    resetGlitch();
+    setTimeout(() => glitchBurst(times - 1, delay), delay);
+  }, delay);
+}
+
+glitchBurst();
 </script>
 
 </body>
