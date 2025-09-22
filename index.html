@@ -17,9 +17,9 @@
 }
 
 @media (max-width:768px){
-  .hero h1{font-size:12vw;}
+  .hero h1{font-size:15vw;}   /* Увеличил CJ3DREAMS */
   .hero p{font-size:1rem;}
-  footer{gap:12px; font-size:0.75rem; flex-wrap:wrap;} /* ✅ фиксы */
+  footer{gap:10px; font-size:0.75rem;} /* Сделал меньше текст в footer */
   .flags img{width:18px;height:12px;}
 }
 
@@ -90,13 +90,11 @@ canvas { position: fixed; top:0; left:0; z-index:0; }
   margin-left:1px;
 }
 
-
 footer {
   position: fixed; bottom:0; width:100%;
-  background:#111; padding:15px 0;
+  background:#111; padding:12px 0;
   display:flex; justify-content:center; gap:25px;
   font-size:1rem; letter-spacing:0.05em; color:#888; z-index:1;
-  text-align:center;
 }
 footer span:hover { color:#00ffff; cursor:pointer; transition:0.3s; }
 
@@ -119,7 +117,6 @@ footer span:hover { color:#00ffff; cursor:pointer; transition:0.3s; }
 }
 .flags img:hover { transform: scale(1.5); }
 
-
 .info-cards {
   position: fixed; left:50%; transform:translateX(-50%);
   bottom:90px; display:flex; flex-direction:column; gap:4px;
@@ -135,7 +132,7 @@ footer span:hover { color:#00ffff; cursor:pointer; transition:0.3s; }
 </head>
 <body>
 
-<audio autoplay loop>
+<audio id="bg-music" loop>
   <source src="audio.mp3" type="audio/mpeg">
   <source src="audio.ogg" type="audio/ogg">
 </audio>
@@ -217,6 +214,13 @@ animate();
 
 window.addEventListener('resize', ()=>{ createStars(); });
 
+// === FIX AUTOPLAY ===
+const bgMusic = document.getElementById("bg-music");
+document.body.addEventListener("click", () => {
+  bgMusic.play().catch(()=>{});
+}, { once:true });
+
+// === GLITCH EFFECT ===
 const glitchText = document.getElementById('glitch-text');
 const originalText = glitchText.textContent;
 glitchText.innerHTML = originalText.split('').map(c => `<span>${c}</span>`).join('');
