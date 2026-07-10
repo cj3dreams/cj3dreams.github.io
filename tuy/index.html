@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Приглашение на свадьбу</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cinzel:wght@400;500;600;700&family=Tangerine:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<!-- Подключаем CSS -->
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/0-envelope.css">
+<link rel="stylesheet" href="css/1-hero.css">
+<link rel="stylesheet" href="css/2-countdown-quran.css">
+<link rel="stylesheet" href="css/3-timeline.css">
+<link rel="stylesheet" href="css/4-venue.css">
+<link rel="stylesheet" href="css/5-footer.css">
+</head>
+<body>
+
+<!-- ЕДИНЫЙ НЕПРЕРЫВНЫЙ ФОН ДЛЯ ВСЕЙ СТРАНИЦЫ -->
+<div class="bg-fixed" aria-hidden="true"></div>
+
+<!-- ============ 0. КОНВЕРТ ============ -->
+<div class="invitation-screen" id="invitationScreen">
+  <div class="bg-particles" id="bgParticles"></div>
+
+  <div class="invitation-wrapper">
+<div class="envelope-float" id="envelopeFloat" style="margin-top: 25vh;">
+
+
+      <div class="envelope-3d" id="envelope3d">
+
+        <!-- Задняя стенка конверта -->
+        <div class="env-back"></div>
+
+        <!-- Карточка -->
+        <div class="env-card" id="envCard">
+          <div class="env-card-glow"></div>
+          <div class="env-card-inner">
+            <div class="ec-orn">✦</div>
+            <div class="ec-mono gold-shine">MJ</div>
+            <div class="ec-title">Wedding Invitation</div>
+            <div class="ec-divider"></div>
+            <div class="ec-text">Мы рады пригласить вас<br>на нашу свадьбу</div>
+            <div class="ec-orn">✦</div>
+          </div>
+        </div>
+
+        <!-- Карман -->
+        <div class="env-pocket"></div>
+
+        <!-- Ленты -->
+        <div class="env-ribbon-vertical" id="ribbonV"></div>
+        <div class="env-ribbon-horizontal" id="ribbonH"></div>
+
+        <!-- Клапан -->
+        <div class="env-flap" id="envFlap"></div>
+
+        <!-- Восковая печать -->
+        <div class="env-seal" id="envSeal">
+          <div class="wax-glow"></div>
+          <div class="wax-body">
+            <div class="wax-stamp">MJ</div>
+          </div>
+          <div class="wax-crack crack-1"></div>
+          <div class="wax-crack crack-2"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="open-hint" id="openHint">
+      <span class="hint-glow">Снимите печать</span>
+      <div class="hint-arrow">↓</div>
+    </div>
+  </div>
+
+  <div class="spark-field" id="sparkField"></div>
+</div>
+
+<!-- ============ ОСНОВНОЙ КОНТЕНТ ============ -->
+<main class="content" id="content">
+
+  <div class="petals" id="petals"></div>
+  <div class="ambient-sparkle" id="ambientSparkle"></div>
+  <div class="floral-drift" id="floralDrift"></div>
+
+  <!-- 1. HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-florals" aria-hidden="true">
+      <span class="floral fl-1">❀</span>
+      <span class="floral fl-2">❀</span>
+      <span class="floral fl-3">❀</span>
+      <span class="floral fl-4">❀</span>
+    </div>
+
+    <div class="chandeliers">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="crystal-rain" id="crystalRain"></div>
+
+    <div class="hero-inner reveal">
+      <div class="hero-topline">— С радостью приглашаем вас —</div>
+      <div class="hero-monogram">
+        <span class="mono-letter gold-shine">MJ</span>
+      </div>
+
+      <h1 class="hero-names">
+        <span class="names-row fit-text" id="namesRow">
+          <span class="name-shine" id="groomName">Джамшед</span>
+          <span class="names-and">&amp;</span>
+          <span class="name-shine" id="brideName">Муздалифа</span>
+        </span>
+      </h1>
+
+      <div class="hero-line"></div>
+      <div class="hero-date" id="weddingDate">7 ноября 2026</div>
+
+      <div class="hero-quran">
+        <div class="hq-orn">﷽</div>
+        <p class="hq-translate">«И сотворили Мы вас парами»</p>
+        <div class="hq-ref">— Коран, Сура 78 «Весть», аят 8 —</div>
+      </div>
+
+      <div class="scroll-down">
+        <div class="mouse"></div>
+        <span>Листайте вниз</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. ОБРАТНЫЙ ОТСЧЁТ + АЯТ -->
+  <section class="countdown-sec reveal">
+    <h2 class="section-title">До торжества осталось</h2>
+    <div class="countdown" id="countdown">
+      <div class="cd-item"><span class="cd-num" id="cdDays">00</span><span class="cd-label">дней</span></div>
+      <div class="cd-item"><span class="cd-num" id="cdHours">00</span><span class="cd-label">часов</span></div>
+      <div class="cd-item"><span class="cd-num" id="cdMins">00</span><span class="cd-label">минут</span></div>
+      <div class="cd-item"><span class="cd-num" id="cdSecs">00</span><span class="cd-label">секунд</span></div>
+    </div>
+  </section>
+
+  <section class="quran-sec reveal">
+    <div class="quran-frame">
+      <div class="quran-corner tl"></div>
+      <div class="quran-corner tr"></div>
+      <div class="quran-corner bl"></div>
+      <div class="quran-corner br"></div>
+      <div class="quran-orn">❁</div>
+      <p class="quran-translate">«И из Его знамений — то, что Он сотворил для вас из вас самих супругов, чтобы вы находили в них покой, и установил между вами любовь и милосердие»</p>
+      <div class="quran-divider"><span>❖</span></div>
+      <div class="quran-ref">Сура Ар-Рум, 30:21</div>
+    </div>
+  </section>
+
+  <!-- 3. ТАЙМЛАЙН -->
+  <section class="timeline-sec">
+    <h2 class="section-title reveal">Ход торжества</h2>
+    <div class="timeline" id="timeline">
+      <div class="tl-progress" id="tlProgress"></div>
+
+      <div class="tl-item reveal" data-side="left">
+        <div class="tl-dot"><span class="tl-icon">🌅</span></div>
+        <div class="tl-card">
+          <div class="tl-time">08:00</div>
+          <h3 class="tl-name">Оши Нахор</h3>
+          <p class="tl-desc">Утренний плов — древняя традиция, объединяющая семьи за одним дастарханом.</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" data-side="right">
+        <div class="tl-dot"><span class="tl-icon">🤵</span></div>
+        <div class="tl-card">
+          <div class="tl-time">14:00</div>
+          <h3 class="tl-name">Ҷўра-домод</h3>
+          <p class="tl-desc">Сбор друзей жениха и торжественные проводы по традиции.</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" data-side="left">
+        <div class="tl-dot"><span class="tl-icon">💍</span></div>
+        <div class="tl-card">
+          <div class="tl-time">15:30</div>
+          <h3 class="tl-name">Церемония</h3>
+          <p class="tl-desc">Торжественная регистрация и обмен клятвами перед близкими.</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" data-side="right">
+        <div class="tl-dot"><span class="tl-icon">🍽️</span></div>
+        <div class="tl-card">
+          <div class="tl-time">18:00</div>
+          <h3 class="tl-name">Свадебный банкет</h3>
+          <p class="tl-desc">Праздничный ужин, музыка и первый танец молодожёнов.</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" data-side="left">
+        <div class="tl-dot"><span class="tl-icon">🎂</span></div>
+        <div class="tl-card">
+          <div class="tl-time">20:00</div>
+          <h3 class="tl-name">Свадебный торт</h3>
+          <p class="tl-desc">Разрезание торта и сладкий момент под звёздным светом люстр.</p>
+        </div>
+      </div>
+
+      <div class="tl-item reveal" data-side="right">
+        <div class="tl-dot"><span class="tl-icon">🌙</span></div>
+        <div class="tl-card">
+          <div class="tl-time">21:00</div>
+          <h3 class="tl-name">Свадьба заканчивается</h3>
+          <p class="tl-desc">Тёплые объятия, слова благодарности и добрые пожелания на прощание.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. МЕСТО ПРОВЕДЕНИЯ -->
+  <section class="venue-sec reveal">
+    <h2 class="section-title">Место торжества</h2>
+    <div class="venue-card">
+      <div class="venue-florals">❀ ❦ ❀</div>
+      <div class="venue-icon">📍</div>
+      <h3 class="venue-name" id="venueName">Свадебный салон «Taj Mahal»</h3>
+      <p class="venue-addr" id="venueAddr">TajMahal Diamond, Худжанд</p>
+      <div class="venue-map">
+        <iframe id="mapFrame"
+          src="https://maps.google.com/maps?q=40.2984074,69.6478986&z=17&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <a class="venue-btn" id="mapBtn" href="https://maps.google.com/maps?ll=40.298407,69.647899&z=17&t=m&hl=ru-RU&gl=US&mapclient=embed&q=40%C2%B017%2754.3%22N%2069%C2%B038%2752.4%22E%2040.298407%2C%2069.647899@40.29840739999999,69.64789859999999" target="_blank">Открыть в картах</a>
+    </div>
+  </section>
+
+  <!-- 5. ФУТЕР -->
+  <footer class="footer reveal">
+    <div class="footer-mono gold-shine" id="footMono">MJ</div>
+    <p class="footer-names"><span class="fit-text" id="footNamesWrap"><span class="name-shine" id="footNames">Джамшед</span><span class="names-and">&amp;</span><span class="name-shine">Муздалифа</span></span></p>
+    <p class="footer-date" id="footDate">07.11.2026</p>
+
+    <div class="footer-rsvp">
+      <div class="rsvp-orn">❦</div>
+      <h2 class="rsvp-title">Будем рады видеть вас</h2>
+      <a class="rsvp-btn" id="rsvpBtn" href="tel:+992900000000"><span>Подтвердить участие</span></a>
+    </div>
+
+    <div class="footer-hearts">❤</div>
+  </footer>
+
+</main>
+
+<!-- Кнопка музыки -->
+<button class="music-btn" id="musicBtn" title="Музыка">♪</button>
+<audio id="bgMusic" loop preload="auto">
+  <source src="assets/audio/audio.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Подключаем JavaScript -->
+<script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/0-envelope.js"></script>
+<script src="js/1-hero.js"></script>
+<script src="js/2-countdown.js"></script>
+<script src="js/3-timeline.js"></script>
+<script src="js/4-venue.js"></script>
+<script src="js/5-footer.js"></script>
+<script src="js/music.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
