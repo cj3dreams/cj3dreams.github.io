@@ -56,9 +56,31 @@
 @keyframes swing{0%,100%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}}
 
 .hero-inner{position:relative;z-index:20;padding:20px;max-width:600px;width:100%;}
-.hero-topline{font-family:var(--font-serif);font-size:clamp(16px,4.8vw,20px);
-  letter-spacing:3px;color:var(--gold-light);margin-bottom:24px;font-style:italic;opacity:.9;}
+.hero-topline {
+  font-family: var(--font-serif);
+  font-size: clamp(17px, 5vw, 23px); 
+  letter-spacing: 3px;
+  color: var(--gold-light);
+  margin-bottom: 24px;
+  font-style: italic;
+  opacity: 0.9;
+  line-height: 1.4; 
+  
 
+  text-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+  animation: heroToplineFloat 6s ease-in-out infinite;
+}
+
+@keyframes heroToplineFloat {
+  0%, 100% { 
+    transform: translateY(0); 
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.25); 
+  }
+  50% { 
+    transform: translateY(-4px); 
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.55); 
+  }
+}
 .hero-monogram{font-family:var(--font-title);font-weight:700;
   font-size:clamp(56px,22vw,120px);line-height:1;position:relative;
   display:flex;align-items:center;justify-content:center;z-index:1;}
@@ -74,7 +96,7 @@
 .hero-names{display:flex;justify-content:center;width:100%;margin:16px 0 12px;overflow:visible;}
 .names-row{
   display:inline-flex;align-items:baseline;white-space:nowrap;
-  gap:0;font-family:var(--font-script);font-size:clamp(32px,10vw,76px);
+  gap:0;font-family:var(--font-script);font-size: clamp(40px, 12vw, 90px); 
   line-height:1.2;transform-origin:center center;will-change:transform;
 }
 .names-row .name-shine{white-space:nowrap;position:relative;z-index:1;}
@@ -95,8 +117,15 @@
 
 .hero-quran{margin:32px auto 8px;max-width:440px;animation:fadeUp 1.4s ease .6s both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
-.hq-orn{font-size:26px;color:var(--gold-light);margin-bottom:12px;
-  filter:drop-shadow(0 0 8px rgba(212,175,55,.5));animation:floatOrn 4s ease-in-out infinite;}
+
+/* ===== ИСПРАВЛЕННЫЙ HQ-ORN (для корректного отображения арабской вязи) ===== */
+.hq-orn{
+  font-size:26px;color:var(--gold-light);margin-bottom:12px;
+  filter:drop-shadow(0 0 8px rgba(212,175,55,.5));animation:floatOrn 4s ease-in-out infinite;
+  /* Фикс для мобильных: запрет переноса, направление справа налево */
+  display:inline-block; white-space:nowrap; direction:rtl;
+}
+
 @keyframes floatOrn{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
 .hq-translate{font-family:var(--font-serif);font-style:italic;
   font-size:clamp(17px,4.8vw,22px);line-height:1.6;color:var(--ice);margin-bottom:8px;}
@@ -110,3 +139,10 @@
 .mouse::before{content:"";position:absolute;left:50%;top:8px;transform:translateX(-50%);
   width:4px;height:9px;border-radius:2px;background:var(--gold);animation:mouseScroll 1.8s ease infinite;}
 @keyframes mouseScroll{0%{opacity:0;top:8px;}30%{opacity:1;}60%{opacity:1;top:22px;}100%{opacity:0;top:22px;}}
+
+/* ===== ДОПОЛНИТЕЛЬНЫЙ ФИКС ДЛЯ САМЫХ МАЛЕНЬКИХ ЭКРАНОВ ===== */
+@media (max-width: 480px) {
+  .hq-orn {
+    font-size: 34px; /* Увеличиваем, чтобы вязь гарантированно не сломалась */
+  }
+}
