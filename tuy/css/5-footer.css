@@ -4,8 +4,11 @@
 .footer{padding:70px 24px 90px;text-align:center;}
 .footer-mono{font-family:var(--font-title);font-weight:700;font-size:clamp(50px,15vw,68px);
   letter-spacing:8px;margin-bottom:16px;}
-.footer-names{font-family:var(--font-script);font-size:clamp(36px,11vw,54px);margin-bottom:10px;line-height:1.3;}
-.footer-names .fit-text{white-space:nowrap;}
+.footer-names{text-align: center; font-family:var(--font-script);font-size:clamp(36px,11vw,54px);margin-bottom:10px;line-height:1.3;}
+.footer-names .fit-text {
+    display: inline-block;
+    transform-origin: center center;
+}
 .footer-date{color:var(--gold-light);letter-spacing:4px;font-size:clamp(16px,4vw,19px);margin-bottom:48px;}
 
 .footer-rsvp{padding:44px 0 8px;border-top:1px solid rgba(212,175,55,.2);

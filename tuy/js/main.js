@@ -8,7 +8,8 @@ function applyConfig(){
   document.getElementById('footNamesWrap').innerHTML =
     `<span class="name-shine">${CONFIG.groomName}</span><span class="names-and">&amp;</span><span class="name-shine">${CONFIG.brideName}</span>`;
   document.getElementById('footDate').textContent = CONFIG.weddingDateShort;
-  document.getElementById('letterMono').textContent = CONFIG.monogram;
+  document.getElementById('monogram').textContent = CONFIG.monogram;
+    document.getElementById('waxMonogram').textContent = CONFIG.waxMonogram;
   document.querySelectorAll('#waxMono, .wax-monogram-echo').forEach(el=>{
     el.textContent = CONFIG.waxMonogram;
   });

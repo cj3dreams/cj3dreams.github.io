@@ -12,23 +12,7 @@
   --font-title:'Cinzel',serif;
   --font-script:'Great Vibes',cursive;
   --vh:1vh;
-  color-scheme: light only;
 }
-
-/* =========================================================
-   ГЛОБАЛЬНАЯ ЗАЩИТА ОТ СМЕНЫ ЦВЕТОВ БРАУЗЕРОМ
-   ========================================================= */
-html, body, * {
-  forced-color-adjust: none !important;
-  color-scheme: light only !important;
-}
-
-@media (forced-colors: active) {
-  html, body, * {
-    forced-color-adjust: none !important;
-  }
-}
-
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
