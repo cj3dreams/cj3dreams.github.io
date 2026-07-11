@@ -3,11 +3,20 @@
    ========================================================= */
 .timeline-sec{padding:70px 18px 60px;}
 .timeline{position:relative;max-width:640px;margin:0 auto;padding:20px 0;isolation:isolate;}
+
 .timeline::before{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);
-  width:2px;height:100%;background:rgba(212,175,55,.2);z-index:0;}
+  width:0px;height:100%;background:rgba(212,175,55,.2);z-index:0;
+  opacity: 0; visibility: hidden;
+  transition: width 0.8s ease, opacity 0.8s ease, visibility 0.8s ease;}
+.timeline.ready::before { width:2px; opacity: 1; visibility: visible; }
+
+/* Золотой прогресс-бар (появляется плавно через 4 сек) */
 .tl-progress{position:absolute;left:50%;top:0;transform:translateX(-50%);
   width:2px;height:0;background:var(--gold-grad);box-shadow:0 0 12px var(--gold);
-  transition:height .2s linear;z-index:1;}
+  z-index:1;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease, height .2s linear;}
+.tl-progress.show { opacity: 1; visibility: visible; }
 .tl-item{position:relative;width:50%;padding:24px 34px;box-sizing:border-box;z-index:2;}
 .tl-item[data-side="left"]{left:0;text-align:right;}
 .tl-item[data-side="right"]{left:50%;text-align:left;}

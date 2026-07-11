@@ -1,8 +1,8 @@
 const CONFIG = {
   groomName:   "Джамшед",
   brideName:   "Муздалифа",
-  monogram:    "MJ",
-  waxMonogram: "MJ",
+  monogram:    "JM",
+  waxMonogram: "JM",
   weddingDateText: "7 ноября 2026",
   weddingDateShort: "07.11.2026",
   targetDate:  new Date(2026, 11, 7, 8, 0, 0),
