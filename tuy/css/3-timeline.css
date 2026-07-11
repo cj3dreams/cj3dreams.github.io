@@ -31,3 +31,43 @@
 .tl-name{font-family:var(--font-serif);font-size:clamp(20px,5vw,26px);
   color:var(--white-silk);margin-bottom:8px;font-weight:600;}
 .tl-desc{font-size:14px;line-height:1.55;color:var(--text-dim);}
+
+/* =========================================================
+   МОБИЛЬНАЯ АДАПТАЦИЯ ТАЙМЛАЙНА
+   ========================================================= */
+@media (max-width: 640px) {
+  /* Сдвигаем центральную линию влево */
+  .timeline::before {
+    left: 20px;
+  }
+  .tl-progress {
+    left: 20px;
+    transform: translateX(0);
+  }
+
+  /* Все элементы становятся на всю ширину и сдвигаются вправо */
+  .tl-item {
+    width: 100%;
+    left: 0 !important;
+    padding: 16px 16px 16px 60px; /* Отступ слева для иконки */
+    text-align: left;
+    box-sizing: border-box;
+  }
+
+  /* Иконки выстраиваем по левой линии */
+  .tl-dot {
+    left: 28px !important; /* Центрируем точку на линии */
+    right: auto !important;
+    top: 28px;
+    width: 40px;
+    height: 40px;
+    transform: translateX(-50%);
+  }
+
+  /* Карточке даем 100% ширины контейнера и отменяем inline-block */
+  .tl-card {
+    display: block;
+    max-width: 100%;
+    padding: 14px 16px;
+  }
+}
