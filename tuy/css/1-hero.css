@@ -87,7 +87,7 @@
 .hero-monogram::before{content:"";position:absolute;top:50%;left:50%;
   width:150%;height:150%;transform:translate(-50%,-50%);border-radius:50%;
   background:radial-gradient(circle,rgba(212,175,55,.28) 0%,transparent 60%);
-  z-index:-1;filter:blur(22px);animation:glowPulse 4s ease-in-out infinite;pointer-events:none;}
+  z-index:-1;filter:blur(22px);animation:glowPulse 3s ease-in-out infinite;pointer-events:none;}
 @keyframes glowPulse{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1);}
   50%{opacity:1;transform:translate(-50%,-50%) scale(1.2);}}
 .hero-monogram .mono-letter{letter-spacing:8px;
@@ -118,22 +118,36 @@
 .hero-quran{margin:32px auto 8px;max-width:440px;animation:fadeUp 1.4s ease .6s both;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
 
-/* ===== ИСПРАВЛЕННЫЙ HQ-ORN (для корректного отображения арабской вязи) ===== */
-.hq-orn{
-  font-size:26px;color:var(--gold-light);margin-bottom:12px;
-  filter:drop-shadow(0 0 8px rgba(212,175,55,.5));animation:floatOrn 4s ease-in-out infinite;
-  /* Фикс для мобильных: запрет переноса, направление справа налево */
-  display:inline-block; white-space:nowrap; direction:rtl;
+.hq-orn {
+  font-family: inherit;
+  font-size: clamp(28px, 8vw, 50px);
+  color: transparent;
+  background: var(--gold-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto 16px auto;
+  filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5));
+  white-space: nowrap;
+
 }
 
-@keyframes floatOrn{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes floatOrn {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-6px) scale(1.05); }
+}
+
+
 .hq-translate{font-family:var(--font-serif);font-style:italic;
   font-size:clamp(17px,4.8vw,22px);line-height:1.6;color:var(--ice);margin-bottom:8px;}
 .hq-ref{font-family:var(--font-title);letter-spacing:2px;font-size:11px;
   color:var(--gold-light);text-transform:uppercase;opacity:.85;}
 
 .scroll-down{margin-top:38px;color:var(--gold-light);
-  font-family:var(--font-title);letter-spacing:3px;font-size:clamp(12px,3.5vw,14px);text-transform:uppercase;}
+  font-family:var(--font-title);letter-spacing:3px;font-size:clamp(12px,3.5vw,14px);text-transform:uppercase;  animation: floatOrn 3s ease-in-out infinite;}
 .mouse{width:26px;height:44px;border:2px solid var(--gold);border-radius:14px;
   margin:0 auto 12px;position:relative;}
 .mouse::before{content:"";position:absolute;left:50%;top:8px;transform:translateX(-50%);

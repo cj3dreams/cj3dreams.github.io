@@ -11,6 +11,7 @@
   --font-serif:'Cormorant Garamond',serif;
   --font-title:'Cinzel',serif;
   --font-script:'Great Vibes',cursive;
+  --font-arabic: 'Amiri', serif; 
   --vh:1vh;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
