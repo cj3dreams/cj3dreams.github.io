@@ -96,8 +96,8 @@
 .hero-names{display:flex;justify-content:center;width:100%;margin:16px 0 12px;overflow:visible;}
 .names-row{
   display:inline-flex;align-items:baseline;white-space:nowrap;
-  gap:0;font-family:var(--font-script);font-size: clamp(40px, 12vw, 90px); 
-  line-height:1.2;transform-origin:center center;will-change:transform;
+  gap:0;font-family:var(--font-script);font-size: clamp(50px, 17vw, 115px);
+  line-height:1.2;transform-origin:center center;will-change:transform;font-weight: 400;
 }
 .names-row .name-shine{white-space:nowrap;position:relative;z-index:1;}
 .names-and{

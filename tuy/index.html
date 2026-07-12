@@ -26,6 +26,9 @@
   <div class="bg-particles" id="bgParticles"></div>
 
   <div class="invitation-wrapper">
+<div class="lang-switcher" id="langSwitcher">
+  <button class="lang-switcher-btn" title="Выбрать язык">RU</button>
+</div>
 <div class="envelope-float" id="envelopeFloat" style="margin-top: 25vh;">
 
 
@@ -42,7 +45,7 @@
             <div class="ec-mono gold-shine" id="monogram">MJ</div>
             <div class="ec-title">Wedding Invitation</div>
             <div class="ec-divider"></div>
-            <div class="ec-text">Мы рады пригласить Вас<br>наше свадебное торжество</div>
+            <div class="ec-text" data-lang-key="envelope_text">Мы рады пригласить Вас<br>наше свадебное торжество</div>
             <div class="ec-orn">✦</div>
           </div>
         </div>
@@ -71,7 +74,7 @@
     </div>
 
     <div class="open-hint" id="openHint">
-      <span class="hint-glow">Снимите печать</span>
+      <span class="hint-glow" data-lang-key="open_hint">Снимите печать</span>
       <div class="hint-arrow">↓</div>
     </div>
   </div>
@@ -104,7 +107,7 @@
     <div class="crystal-rain" id="crystalRain"></div>
 
     <div class="hero-inner reveal">
-      <div class="hero-topline">— Приглашаем —<br>— на свадебное торжество —</div>
+      <div class="hero-topline" data-lang-key="hero_topline">— Приглашаем —<br>— на свадебное торжество —</div>
       <div class="hero-monogram">
         <span class="mono-letter gold-shine" id="monogram">JM</span>
       </div>
@@ -122,25 +125,25 @@
 
       <div class="hero-quran">
         <div class="hq-orn">꧁ ꧂</div>
-        <p class="hq-translate">«И сотворили Мы вас парами»</p>
-        <div class="hq-ref">— Коран, Сура 78 «Весть», аят 8 —</div>
+        <p class="hq-translate" data-lang-key="quran_1_translate">«И сотворили Мы вас парами»</p>
+        <div class="hq-ref" data-lang-key="quran_1_ref">— Коран, Сура 78 «Весть», аят 8 —</div>
       </div>
 
       <div class="scroll-down">
         <div class="mouse"></div>
-        <span>Листайте вниз</span>
+        <span data-lang-key="scroll_down">Листайте вниз</span>
       </div>
     </div>
   </section>
 
   <!-- 2. ОБРАТНЫЙ ОТСЧЁТ + АЯТ -->
   <section class="countdown-sec reveal">
-    <h2 class="section-title">До торжества осталось</h2>
+    <h2 class="section-title" data-lang-key="countdown_title">До торжества осталось</h2>
     <div class="countdown" id="countdown">
-      <div class="cd-item"><span class="cd-num" id="cdDays">00</span><span class="cd-label">дней</span></div>
-      <div class="cd-item"><span class="cd-num" id="cdHours">00</span><span class="cd-label">часов</span></div>
-      <div class="cd-item"><span class="cd-num" id="cdMins">00</span><span class="cd-label">минут</span></div>
-      <div class="cd-item"><span class="cd-num" id="cdSecs">00</span><span class="cd-label">секунд</span></div>
+      <div class="cd-item"><span class="cd-num" id="cdDays">00</span><span class="cd-label" data-lang-key="cd_days">дней</span></div>
+      <div class="cd-item"><span class="cd-num" id="cdHours">00</span><span class="cd-label" data-lang-key="cd_hours">часов</span></div>
+      <div class="cd-item"><span class="cd-num" id="cdMins">00</span><span class="cd-label" data-lang-key="cd_mins">минут</span></div>
+      <div class="cd-item"><span class="cd-num" id="cdSecs">00</span><span class="cd-label" data-lang-key="cd_secs">секунд</span></div>
     </div>
   </section>
 
@@ -151,15 +154,15 @@
       <div class="quran-corner bl"></div>
       <div class="quran-corner br"></div>
       <div class="quran-orn">❁</div>
-      <p class="quran-translate">«И из Его знамений — то, что Он сотворил для вас из вас самих супругов, чтобы вы находили в них покой, и установил между вами любовь и милосердие»</p>
+      <p class="quran-translate" data-lang-key="quran_2_translate">«И из Его знамений — то, что Он сотворил для вас из вас самих супругов, чтобы вы находили в них покой, и установил между вами любовь и милосердие»</p>
       <div class="quran-divider"><span>❖</span></div>
-      <div class="quran-ref">Сура Ар-Рум, 30:21</div>
+      <div class="quran-ref" data-lang-key="quran_2_ref">Сура Ар-Рум, 30:21</div>
     </div>
   </section>
 
   <!-- 3. ТАЙМЛАЙН -->
   <section class="timeline-sec">
-    <h2 class="section-title reveal">Ход торжества</h2>
+    <h2 class="section-title reveal" data-lang-key="timeline_title">Ход торжества</h2>
     <div class="timeline" id="timeline">
       <div class="tl-progress" id="tlProgress"></div>
 
@@ -167,8 +170,8 @@
         <div class="tl-dot"><span class="tl-icon">🌅</span></div>
         <div class="tl-card">
           <div class="tl-time">08:00</div>
-          <h3 class="tl-name">Оши Нахор</h3>
-          <p class="tl-desc">Утренний плов — древняя традиция, объединяющая семьи за одним дастарханом.</p>
+          <h3 class="tl-name" data-lang-key="tl_name_1">Оши Нахор</h3>
+          <p class="tl-desc" data-lang-key="tl_desc_1">Утренний плов — древняя традиция, объединяющая семьи за одним дастарханом.</p>
         </div>
       </div>
 
@@ -176,8 +179,8 @@
         <div class="tl-dot"><span class="tl-icon">🤵</span></div>
         <div class="tl-card">
           <div class="tl-time">14:00</div>
-          <h3 class="tl-name">Ҷўра-домод</h3>
-          <p class="tl-desc">Сбор друзей жениха и торжественные проводы по традиции.</p>
+          <h3 class="tl-name" data-lang-key="tl_name_2">Ҷўра-домод</h3>
+          <p class="tl-desc" data-lang-key="tl_desc_2">Сбор друзей жениха и торжественные проводы по традиции.</p>
         </div>
       </div>
 
@@ -185,8 +188,8 @@
         <div class="tl-dot"><span class="tl-icon">💍</span></div>
         <div class="tl-card">
           <div class="tl-time">15:30</div>
-          <h3 class="tl-name">Церемония</h3>
-          <p class="tl-desc">Торжественная регистрация и обмен клятвами перед близкими.</p>
+          <h3 class="tl-name" data-lang-key="tl_name_3">Церемония</h3>
+          <p class="tl-desc" data-lang-key="tl_desc_3">Торжественная регистрация и обмен клятвами перед близкими.</p>
         </div>
       </div>
 
@@ -194,8 +197,8 @@
         <div class="tl-dot"><span class="tl-icon">🍽️</span></div>
         <div class="tl-card">
           <div class="tl-time">18:00</div>
-          <h3 class="tl-name">Свадебный банкет</h3>
-          <p class="tl-desc">Праздничный ужин, музыка и первый танец молодожёнов.</p>
+          <h3 class="tl-name" data-lang-key="tl_name_4">Свадебный банкет</h3>
+          <p class="tl-desc" data-lang-key="tl_desc_4">Праздничный ужин, музыка и первый танец молодожёнов.</p>
         </div>
       </div>
 
@@ -203,8 +206,8 @@
         <div class="tl-dot"><span class="tl-icon">🎂</span></div>
         <div class="tl-card">
           <div class="tl-time">20:00</div>
-          <h3 class="tl-name">Свадебный торт</h3>
-          <p class="tl-desc">Разрезание торта и сладкий момент под звёздным светом люстр.</p>
+          <h3 class="tl-name" data-lang-key="tl_name_5">Свадебный торт</h3>
+          <p class="tl-desc" data-lang-key="tl_desc_5">Разрезание торта и сладкий момент под звёздным светом люстр.</p>
         </div>
       </div>
 
@@ -212,8 +215,8 @@
         <div class="tl-dot"><span class="tl-icon">🌙</span></div>
         <div class="tl-card">
           <div class="tl-time">21:00</div>
-          <h3 class="tl-name">Завершение торжества</h3>
-          <p class="tl-desc">Тёплые объятия, слова благодарности и добрые пожелания на прощание.</p>
+          <h3 class="tl-name" data-lang-key="tl_name_6">Завершение торжества</h3>
+          <p class="tl-desc" data-lang-key="tl_desc_6">Тёплые объятия, слова благодарности и добрые пожелания на прощание.</p>
         </div>
       </div>
     </div>
@@ -221,7 +224,7 @@
 
   <!-- 4. МЕСТО ПРОВЕДЕНИЯ -->
   <section class="venue-sec reveal">
-    <h2 class="section-title">Место торжества</h2>
+    <h2 class="section-title" data-lang-key="venue_title">Место торжества</h2>
     <div class="venue-card">
       <div class="venue-florals">❀ ❦ ❀</div>
       <div class="venue-icon">📍</div>
@@ -232,8 +235,7 @@
          src="https://www.google.com/maps?q=Tajmahal+Diamonds+Hall&ll=40.2984074,69.6478986&z=18&output=embed"
           loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
-      <a class="venue-btn" id="mapBtn" href="https://maps.app.goo.gl/HWGpkXRQCatr9p626" target="_blank">Открыть в картах</a>
-    </div>
+<a class="venue-btn" id="mapBtn" data-lang-key="open_map" href="https://maps.app.goo.gl/HWGpkXRQCatr9p626" target="_blank">Открыть в картах</a>    </div>
   </section>
 
   <!-- 5. ФУТЕР -->
@@ -244,8 +246,8 @@
 
     <div class="footer-rsvp">
       <div class="rsvp-orn">❦</div>
-      <h2 class="rsvp-title">Будем рады видеть вас</h2>
-      <a class="rsvp-btn" id="rsvpBtn" href="tel:+992900000000"><span>Подтвердить участие</span></a>
+      <h2 class="rsvp-title" data-lang-key="rsvp_title">Будем рады видеть вас</h2>
+      <a class="rsvp-btn" id="rsvpBtn" href="tel:+992900000000"><span data-lang-key="rsvp_btn">Подтвердить участие</span></a>
     </div>
 
     <div class="footer-hearts">❤</div>
@@ -262,6 +264,7 @@
 <!-- Подключаем JavaScript -->
 <script src="js/config.js"></script>
 <script src="js/utils.js"></script>
+<script src="js/i18n.js"></script> 
 <script src="js/0-envelope.js"></script>
 <script src="js/1-hero.js"></script>
 <script src="js/2-countdown.js"></script>

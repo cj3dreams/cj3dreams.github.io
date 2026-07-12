@@ -80,20 +80,3 @@ function makeFloralDrift(){
     box.appendChild(f);
   }
 }
-
-/* ===== ЗОЛОТОЙ ВЗРЫВ (искры) ===== */
-function burstGold(x,y){
-  const box=document.getElementById('envBurst');if(!box)return;
-  for(let i=0;i<26;i++){
-    const s=document.createElement('span');
-    s.className='spark';
-    const angle=Math.random()*Math.PI*2;
-    const dist=50+Math.random()*100;
-    s.style.setProperty('--dx',Math.cos(angle)*dist+'px');
-    s.style.setProperty('--dy',Math.sin(angle)*dist+'px');
-    s.style.left=x+'px';s.style.top=y+'px';
-    s.style.animationDelay=(Math.random()*0.12)+'s';
-    box.appendChild(s);
-    setTimeout(()=>s.remove(),1500);
-  }
-}

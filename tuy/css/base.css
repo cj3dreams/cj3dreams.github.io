@@ -47,6 +47,7 @@ body.scrollable{overflow-y:auto;}
   -webkit-text-fill-color:transparent;color:transparent;
   animation:goldRun 9s ease-in-out infinite;
   will-change:background-position;
+   padding: 0 9px;
 }
 .name-shine{animation-duration:11s;}
 @keyframes goldRun{
