@@ -1,6 +1,6 @@
 /* ===== МУЗЫКА ===== */
 const bgMusic = document.getElementById('bgMusic');
-bgMusic.src = 'assets/audio/audio.mp3';
+bgMusic.src = 'assets/audio/audio.opus';
 const musicBtn = document.getElementById('musicBtn');
 
 function startMusic(){
