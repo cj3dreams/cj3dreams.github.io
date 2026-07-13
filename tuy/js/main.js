@@ -11,9 +11,6 @@ function applyConfig(){
   document.getElementById('monogram').textContent = CONFIG.monogram;
   document.getElementById('waxMonogram').textContent = CONFIG.waxMonogram;
   document.getElementById('footMono').textContent = CONFIG.monogram;
-  const lat=CONFIG.mapLat, lng=CONFIG.mapLng;
-  document.getElementById('mapFrame').src = `https://maps.google.com/maps?q=${lat},${lng}&z=17&output=embed`;
-  document.getElementById('rsvpBtn').href = "tel:" + CONFIG.rsvpPhone;
 }
 
 /* ===== REVEAL ===== */
@@ -70,24 +67,25 @@ function detectLanguage() {
 }
 
 // Функция для ручного переключения (цикл: ru → en → tg → ru)
+// Функция для ручного переключения (цикл: ru → en → tg → ru)
 function switchLanguage() {
   const switcherBtn = document.querySelector('.lang-switcher-btn');
-  // Если кнопки нет, ставим русский по умолчанию
   let currentText = switcherBtn ? switcherBtn.textContent : 'RU';
   let current = currentText.toLowerCase();
-  
-  // Если на кнопке написано TJ, считаем его tg
   if (current === 'tj') current = 'tg';
-  
+
   const order = ['ru', 'en', 'tg'];
   let idx = order.indexOf(current);
-  if (idx === -1) idx = 0; // Если что-то пошло не так, сбрасываем на ru
-  
+  if (idx === -1) idx = 0;
   const next = order[(idx + 1) % order.length];
   setLanguage(next);
   localStorage.setItem('preferredLang', next);
-}
 
+  // Перезагружаем карусель и счётчик при смене языка
+  if (typeof refreshWishes === 'function') {
+    refreshWishes();
+  }
+}
 /* ===== ЗАПУСК ===== */
 document.addEventListener('DOMContentLoaded', function(){
   if ('scrollRestoration' in history) {
@@ -127,7 +125,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
   window.startMusic = startMusic;
   window.initReveal = initReveal;
-  window.burstGold = burstGold;
   window.makePetals = makePetals;
   window.makeCrystalRain = makeCrystalRain;
   window.makeAmbientSparkle = makeAmbientSparkle;

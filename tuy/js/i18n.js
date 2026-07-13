@@ -1,6 +1,5 @@
 const TRANSLATIONS = {
   ru: {
-    // Конфиг (имена, даты, локации)
     groom_name: " Джамшед ",
     bride_name: " Муздалифа ",
     venue_name: "Свадебный зал «TajMahal»",
@@ -8,7 +7,6 @@ const TRANSLATIONS = {
     date_text: "7 ноября 2026",
     date_short: "07.11.2026",
 
-    // Остальные тексты
     envelope_text: "Мы рады пригласить Вас<br>наше свадебное торжество",
     open_hint: "Снимите печать",
     hero_topline: "— Приглашаем —<br>— на свадебное торжество —",
@@ -16,7 +14,7 @@ const TRANSLATIONS = {
     countdown_title: "До торжества осталось",
     timeline_title: "Ход торжества",
     venue_title: "Место торжества",
-    rsvp_title: "Будем рады видеть вас",
+    rsvp_title: "Будем рады видеть Вас",
     rsvp_btn: "Подтвердить участие",
     open_map: "Открыть в картах",
     quran_1_translate: "«И сотворили Мы вас парами»",
@@ -29,10 +27,32 @@ const TRANSLATIONS = {
     tl_name_3: "Церемония", tl_desc_3: "Торжественная регистрация и обмен клятвами перед близкими.",
     tl_name_4: "Свадебный банкет", tl_desc_4: "Праздничный ужин, музыка и первый танец молодожёнов.",
     tl_name_5: "Свадебный торт", tl_desc_5: "Разрезание торта и сладкий момент под звёздным светом люстр.",
-    tl_name_6: "Завершение торжества", tl_desc_6: "Тёплые объятия, слова благодарности и добрые пожелания на прощание."
+    tl_name_6: "Завершение торжества", tl_desc_6: "Тёплые объятия, слова благодарности и добрые пожелания на прощание.",
+
+    wishes_count: "Уже получено {count} поздравлений",
+    wishes_count_loading: "Загрузка...",
+    wish_open_btn: "Оставить поздравление",
+    wish_modal_title: "Оставить поздравление",
+    wish_name_label: "Ваше имя",
+    wish_text_label: "Ваше поздравление",
+    wish_consent: "Я даю согласие на публикацию моего поздравления на сайте после предварительной проверки организаторами свадьбы и я понимаю, что окончательное решение о публикации остаётся за ними.",
+    wish_submit: "Отправить",
+    wish_sent_text: "Спасибо! Ваше поздравление отправлено на модерацию и будет опубликовано после проверки.",
+    rsvp_open_btn: "Подтвердить участие",
+    rsvp_modal_title: "Подтверждение участия",
+    rsvp_name_label: "Ваше имя",
+    rsvp_phone_label: "Телефон (необязательно)",
+    rsvp_side_label: "Вы со стороны",
+    rsvp_side_select: "Выберите",
+    rsvp_side_groom: "Жениха",
+    rsvp_side_bride: "Невесты",
+    rsvp_guests_label: "Количество гостей",
+    rsvp_guests_select: "Выберите",
+    rsvp_submit: "Подтвердить",
+    rsvp_sent_text: "Спасибо! Мы учли ваше присутствие.",
+    months: ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"]
   },
   en: {
-    // Конфиг
     groom_name: " Jamshed ",
     bride_name: " Muzdalifa ",
     venue_name: "«TajMahal» Wedding Hall",
@@ -60,10 +80,32 @@ const TRANSLATIONS = {
     tl_name_3: "Ceremony", tl_desc_3: "Formal registration and exchange of vows in front of loved ones.",
     tl_name_4: "Wedding Banquet", tl_desc_4: "Festive dinner, music, and the first dance of the newlyweds.",
     tl_name_5: "Wedding Cake", tl_desc_5: "Cutting the cake and a sweet moment under the starlight of chandeliers.",
-    tl_name_6: "End of Celebration", tl_desc_6: "Warm hugs, words of gratitude, and good wishes for farewell."
+    tl_name_6: "End of Celebration", tl_desc_6: "Warm hugs, words of gratitude, and good wishes for farewell.",
+
+    wishes_count: "{count} greetings received",
+    wishes_count_loading: "Loading...",
+    wish_open_btn: "Leave a greeting",
+    wish_modal_title: "Leave a greeting",
+    wish_name_label: "Your name",
+    wish_text_label: "Your greeting",
+    wish_consent: "I agree that my greeting will be published on the website after a preliminary review by the wedding organizers, and I understand that the final decision on publication remains with them.",
+    wish_submit: "Send",
+    wish_sent_text: "Thank you! Your greeting has been sent for moderation and will be published after review.",
+    rsvp_open_btn: "Confirm attendance",
+    rsvp_modal_title: "Confirm attendance",
+    rsvp_name_label: "Your name",
+    rsvp_phone_label: "Phone (optional)",
+    rsvp_side_label: "You are from the side of",
+    rsvp_side_select: "Select",
+    rsvp_side_groom: "Groom",
+    rsvp_side_bride: "Bride",
+    rsvp_guests_label: "Number of guests",
+    rsvp_guests_select: "Select",
+    rsvp_submit: "Confirm",
+    rsvp_sent_text: "Thank you! We have noted your presence.",
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   },
   tg: {
-    // Конфиг (имена, даты, локации)
     groom_name: " Джамшед ",
     bride_name: " Муздалифа ",
     venue_name: "Толори «TajMahal»",
@@ -71,7 +113,6 @@ const TRANSLATIONS = {
     date_text: "7 ноябри 2026",
     date_short: "07.11.2026",
 
-    // Остальные тексты
     envelope_text: "Мо шуморо<br>ба базми мо даъват менамоем",
     open_hint: "Мӯҳрро бишканед",
     hero_topline: "— Шумо ба базми мо даъват ҳастед —",
@@ -79,7 +120,7 @@ const TRANSLATIONS = {
     countdown_title: "То базми мо:",
     timeline_title: "Нақшаи базм",
     venue_title: "Макони базм",
-    rsvp_title: "Аз дидани шумо хушҳолем",
+    rsvp_title: "Аз дидани Шумо хушҳолем",
     rsvp_btn: "Иштирокро тасдиқ кунед",
     open_map: "Дар харита кушодан",
     quran_1_translate: "«Ва Мо шуморо ҷуфт-ҷуфт офаридем»",
@@ -92,6 +133,29 @@ const TRANSLATIONS = {
     tl_name_3: "Маросим", tl_desc_3: "Бақайдгирии расмӣ ва ивази қавл дар назди наздикон.",
     tl_name_4: "Зиёфати базм", tl_desc_4: "Хӯроки идона, мусиқӣ ва рақси якуми навхонадорон.",
     tl_name_5: "Торти базм", tl_desc_5: "Буридани торт ва лаҳзаи ширине дар зери нури ситораҳои люстраҳо.",
-    tl_name_6: "Анҷоми базм", tl_desc_6: "Оғӯши гарм, калимаҳои ташаккур ва ниятҳои нек дар вақти хайрухуш."
+    tl_name_6: "Анҷоми базм", tl_desc_6: "Оғӯши гарм, калимаҳои ташаккур ва ниятҳои нек дар вақти хайрухуш.",
+
+    wishes_count: "{count} табрикот гирифта шуд",
+    wishes_count_loading: "Боркунӣ...",
+    wish_open_btn: "Табрикот нависед",
+    wish_modal_title: "Табрикот нависед",
+    wish_name_label: "Номи Шумо",
+    wish_text_label: "Табрикоти Шумо",
+    wish_consent: "Ман розӣ ҳастам, ки табрикоти ман пас аз тафтиши пешакӣ аз ҷониби созмондиҳандагони тӯй дар сайт нашр карда шавад ва ман мефаҳмам, ки қарори ниҳоӣ дар бораи нашр бо онҳост.",
+    wish_submit: "Фиристодан",
+    wish_sent_text: "Ташаккур! Табрикоти шумо барои тасдиқ фиристода шуд ва пас аз тафтиш нашр хоҳад шуд.",
+    rsvp_open_btn: "Иштирокро тасдиқ кунед",
+    rsvp_modal_title: "Тасдиқи иштирок",
+    rsvp_name_label: "Номи Шумо",
+    rsvp_phone_label: "Телефон (ихтиёрӣ)",
+    rsvp_side_label: "Шумо аз тарафи",
+    rsvp_side_select: "Интихоб кунед",
+    rsvp_side_groom: "Домод",
+    rsvp_side_bride: "Арӯс",
+    rsvp_guests_label: "Шумораи меҳмонон",
+    rsvp_guests_select: "Интихоб кунед",
+    rsvp_submit: "Тасдиқ кардан",
+    rsvp_sent_text: "Ташаккур! Мо ҳузури Шуморо қайд кардем.",
+    months: ["январ", "феврал", "март", "апрел", "май", "июн", "июл", "август", "сентябр", "октябр", "ноябр", "декабр"]
   }
 };

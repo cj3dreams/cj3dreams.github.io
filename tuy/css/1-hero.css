@@ -120,7 +120,7 @@
 
 .hq-orn {
   font-family: inherit;
-  font-size: clamp(28px, 8vw, 50px);
+  font-size: clamp(28px, 10vw, 60px);
   color: transparent;
   background: var(--gold-grad);
   -webkit-background-clip: text;
@@ -129,7 +129,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 0 auto 16px auto;
+  margin: 0 auto 26px auto;
   filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.5));
   white-space: nowrap;
 
