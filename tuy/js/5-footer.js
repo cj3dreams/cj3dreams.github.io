@@ -1,11 +1,10 @@
 /* =========================================================
-   5. FOOTER — ПРЯМОЙ REST API
+   5. FOOTER — ТОЛЬКО CLOUD FUNCTIONS (БЕЗ REST CLP)
    ========================================================= */
 
 const APP_ID = "GYjlhj70ugQnkWt1O9peSmyM6tWYPX686sdAoL1y";
 const REST_KEY = "kYumQQMAUjKCCHGoOwlyLwRPlSjMBEgQhssjTfjO";
-const WISH_URL = "https://parseapi.back4app.com/classes/Wish";
-const GUEST_URL = "https://parseapi.back4app.com/classes/Guest";
+const BASE_URL = "https://parseapi.back4app.com/functions/";
 
 let swiper = null;
 let currentPage = 1;
@@ -15,7 +14,7 @@ let hasMore = true;
 const wishesWrapper = document.getElementById('wishesList');
 const wishesCount = document.getElementById('wishesCount');
 
-// Набор эмодзи только из сайта (цветы, листья) – золотой цвет в CSS
+// Набор эмодзи
 const EMOJIS = ['❀', '✿', '❁', '❦', '✦', '❖', '☆', '❋', '☘', '🌿', '🌸', '🌼'];
 let lastEmojiIndex = -1;
 
@@ -28,7 +27,7 @@ function getRandomEmoji() {
   return EMOJIS[idx];
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
   wishesCount.textContent = '0';
 
@@ -40,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
     const months = (TRANSLATIONS && TRANSLATIONS[lang] && TRANSLATIONS[lang].months)
-      || ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return `${day} ${months[monthIndex]} ${year}`;
   }
 
@@ -64,45 +63,52 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
   }
 
+  // Загрузка одобренных поздравлений через Cloud Function
+  // Загрузка одобренных поздравлений через Cloud Function
   async function loadWishes(page) {
     if (isLoading || !hasMore) return;
     isLoading = true;
     try {
-      const where = encodeURIComponent(JSON.stringify({ status: "approved" }));
-      const url = `${WISH_URL}?where=${where}&order=-createdAt&limit=${limit}&skip=${(page-1)*limit}`;
-
-      const resp = await fetch(url, {
+      const resp = await fetch(BASE_URL + 'getApprovedWishes', {
+        method: 'POST',
         headers: {
           "X-Parse-Application-Id": APP_ID,
-          "X-Parse-REST-API-Key": REST_KEY
-        }
+          "X-Parse-REST-API-Key": REST_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ page, limit })
       });
-
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const data = await resp.json();
 
-      if (data.results.length === 0) {
+      // --- ИСПРАВЛЕННЫЙ ПАРСИНГ ---
+      const wishesArray = data.result?.result?.wishes || data.result?.wishes || data.wishes || [];
+
+      if (wishesArray.length === 0) {
         hasMore = false;
         return;
       }
 
-      data.results.forEach(wish => {
+      wishesArray.forEach(wish => {
         wishesWrapper.insertAdjacentHTML('beforeend', renderWishCard(wish));
       });
 
       if (swiper) swiper.update();
-      hasMore = data.results.length === limit;
+      hasMore = wishesArray.length === limit;
       currentPage++;
 
-      const countUrl = `${WISH_URL}?where=${where}&count=1&limit=0`;
-      const countResp = await fetch(countUrl, {
+      // Счётчик
+      const countResp = await fetch(BASE_URL + 'getApprovedCount', {
+        method: 'POST',
         headers: {
           "X-Parse-Application-Id": APP_ID,
-          "X-Parse-REST-API-Key": REST_KEY
+          "X-Parse-REST-API-Key": REST_KEY,
+          "Content-Type": "application/json"
         }
       });
       const countData = await countResp.json();
-      const total = countData.count || 0;
+      const total = countData.result?.result || countData.result || countData.count || 0;
+
       const lang = localStorage.getItem('preferredLang') || 'ru';
       const countText = (typeof TRANSLATIONS !== 'undefined' && TRANSLATIONS[lang])
         ? TRANSLATIONS[lang].wishes_count
@@ -121,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
     swiper = new Swiper('.wishes-carousel', {
       slidesPerView: 1.2,
       spaceBetween: 16,
-      centeredSlides: true, // по умолчанию центрируем на всех экранах (включая мобильные)
+      centeredSlides: true,
       loop: false,
       pagination: { el: '.swiper-pagination', clickable: true },
       breakpoints: {
@@ -129,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
         1024: { slidesPerView: 3, spaceBetween: 24, centeredSlides: false },
       },
       on: {
-        reachEnd: function() {
+        reachEnd: function () {
           if (!isLoading && hasMore) {
             loadWishes(currentPage);
           }
@@ -138,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  window.refreshWishes = function() {
+  window.refreshWishes = function () {
     if (swiper) {
       swiper.destroy(true, true);
       swiper = null;
@@ -170,11 +176,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   wishOpenBtn.addEventListener('click', openWishModal);
   wishModalClose.addEventListener('click', closeWishModal);
-  wishModal.addEventListener('click', function(e) {
+  wishModal.addEventListener('click', function (e) {
     if (e.target === wishModal) closeWishModal();
   });
 
-  wishForm.addEventListener('submit', async function(e) {
+  wishForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     const name = document.getElementById('wishName').value.trim();
     const text = document.getElementById('wishText').value.trim();
@@ -190,18 +196,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     try {
-      const resp = await fetch(WISH_URL, {
+      const resp = await fetch(BASE_URL + 'submitWish', {
         method: 'POST',
         headers: {
           "X-Parse-Application-Id": APP_ID,
           "X-Parse-REST-API-Key": REST_KEY,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          name,
-          text,
-          status: "pending"
-        })
+        body: JSON.stringify({ name, text })
       });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
@@ -224,6 +226,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const rsvpSuccess = document.getElementById('rsvpSuccess');
   const rsvpSuccessOutside = document.getElementById('rsvpSuccessOutside');
 
+  const rsvpPhoneInput = document.getElementById('rsvpPhone');
+  if (rsvpPhoneInput) {
+    rsvpPhoneInput.addEventListener('input', function () {
+      this.value = this.value.replace(/[^0-9+]/g, '');
+    });
+  }
+
   if (localStorage.getItem('rsvp_sent') === 'true') {
     rsvpOpenBtn.style.display = 'none';
     rsvpSuccessOutside.style.display = 'block';
@@ -234,11 +243,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   rsvpOpenBtn.addEventListener('click', openRsvpModal);
   rsvpModalClose.addEventListener('click', closeRsvpModal);
-  rsvpModal.addEventListener('click', function(e) {
+  rsvpModal.addEventListener('click', function (e) {
     if (e.target === rsvpModal) closeRsvpModal();
   });
 
-  rsvpForm.addEventListener('submit', async function(e) {
+  rsvpForm.addEventListener('submit', async function (e) {
     e.preventDefault();
     const name = document.getElementById('rsvpName').value.trim();
     const phone = document.getElementById('rsvpPhone').value.trim();
@@ -250,22 +259,15 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    const payload = {
-      name: name,
-      phone: phone || '',
-      side: side,
-      guests: guests
-    };
-
     try {
-      const resp = await fetch(GUEST_URL, {
+      const resp = await fetch(BASE_URL + 'submitGuest', {
         method: 'POST',
         headers: {
           "X-Parse-Application-Id": APP_ID,
           "X-Parse-REST-API-Key": REST_KEY,
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ name, phone, side, guests })
       });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
@@ -282,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function escapeHtml(text) {
     if (!text) return '';
-    return String(text).replace(/[&<>"]/g, function(m) {
+    return String(text).replace(/[&<>"]/g, function (m) {
       if (m === '&') return '&amp;';
       if (m === '<') return '&lt;';
       if (m === '>') return '&gt;';
