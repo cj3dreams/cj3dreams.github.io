@@ -119,7 +119,7 @@ const TRANSLATIONS = {
     open_hint: "Даъватномаро зер кунед", 
     hero_topline: "— Даъватнома —<br>— ба базми шоҳонаи хонадоршавии мо —", 
     scroll_down: "Ба поён варақ занед", 
-    countdown_title: "То оғози базм:",
+    countdown_title: "То оғози базм",
     timeline_title: "Барномаи базм", 
     venue_title: "Макони баргузорӣ",
     rsvp_title: "Хушҳол хоҳем шуд, агар ҳамроҳи мо бошед", 
