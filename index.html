@@ -1,410 +1,275 @@
 <!DOCTYPE html>
-<html lang="ru">
-
+<html lang="en">
 <head>
-  <link rel="icon" type="image/png" sizes="96x96" href="favicon96.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon16.png">
-  <meta charset="UTF-8">
-  <meta name="color-scheme" content="light only">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Приглашение на свадьбу</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cinzel:wght@400;500;600;700&family=Tangerine:wght@400;700&family=Great+Vibes&display=swap"
-    rel="stylesheet">
-  <!-- Подключаем CSS -->
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/0-envelope.css">
-  <link rel="stylesheet" href="css/1-hero.css">
-  <link rel="stylesheet" href="css/2-countdown-quran.css">
-  <link rel="stylesheet" href="css/3-timeline.css">
-  <link rel="stylesheet" href="css/4-venue.css">
-  <link rel="stylesheet" href="css/5-footer.css">
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cj3dreams</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<style>
+@keyframes slideIn { to {opacity:1; transform:translateY(0);} }
+@keyframes fadeIn { to {opacity:1; transform:translateY(0);} }
+@keyframes blink { 50% {opacity:0;} }
+@keyframes fadeCosmos { 0%,100%{opacity:1;} 50%{opacity:0.9;} }
 
+@keyframes pulse {
+  0%,100% { color:#888; }
+  50% { color:#00ffff; }
+}
+
+@media (max-width:768px){
+  .hero h1{font-size:17vw;}
+  .hero p{font-size:0.9rem;}
+  footer{gap:8px; font-size:0.7rem;}
+  .flags img{width:18px;height:12px;}
+}
+
+body, html {
+  margin:0; padding:0;
+  font-family: 'Poppins', sans-serif;
+  background:#000;
+  color:#fff;
+  overflow-x:hidden;
+  position: relative;
+}
+
+canvas { position: fixed; top:0; left:0; z-index:0; }
+
+.hero {
+  position: relative; z-index:1;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  height:100vh; text-align:center; padding:0 20px;
+}
+
+.hero h1 {
+  font-size:7vw;
+  font-weight:900;
+  letter-spacing:0.2em;
+  color:#00ffff;
+  text-transform:uppercase;
+  opacity:0.9;
+  animation: fadeSlideIn 2s ease-out forwards, pulseOpacity 12s ease-in-out infinite;
+}
+
+@keyframes fadeSlideIn {
+  0% { opacity:0; transform: translateY(-50px); }
+  50% { opacity:1; transform: translateY(20px); }
+  100% { opacity:1; transform: translateY(0); }
+}
+@keyframes pulseOpacity {
+  0%,20%   { opacity:0.9; } 
+  50%      { opacity:0.5; } 
+  80%,95% { opacity:0.9; } 
+}
+
+.hero p {
+  font-family: 'Press Start 2P', monospace;
+  font-size:0.85rem; margin-top:0.3rem;
+  color:#aaa; opacity:0; transform:translateY(15px);
+  animation:fadeIn 2s 2s forwards;
+  position: relative;
+  transition: color 0.1s, left 0.1s, top 0.1s;
+}
+
+@font-face {
+    font-family: 'Telegrama';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Telegrama'), url('https://fonts.cdnfonts.com/s/26438/telegraw.woff') format('woff');
+}
+
+.hero small {
+  font-family: 'Telegrama', monospace; display: block;
+  font-size: 0.85rem; color: #555; margin-top: 16px; max-width: 600px;
+  text-align: center;
+}
+
+.cursor-blink::after {
+  content:"/";
+  animation: blink 1s steps(1) infinite;
+  margin-left:1px;
+}
+
+footer {
+  position: fixed; bottom:0; width:100%;
+  background:#111; padding:10px 0;
+  display:flex; justify-content:center; gap:20px;
+  font-size:0.85rem; letter-spacing:0.05em; color:#888; z-index:1;
+}
+footer span:hover { color:#00ffff; cursor:pointer; transition:0.3s; }
+
+.flags {
+  position: fixed; top:10px; right:10px;
+  display:flex; flex-direction:column;
+  gap:5px; align-items:flex-end; z-index:1;
+}
+.flags small {
+  color:#888; margin-bottom:4px; font-size:0.85rem;
+  text-transform: lowercase;
+  animation: pulse 3s infinite;
+}
+.flags img { 
+  width:21px; 
+  height:14px; 
+  opacity:0.82; 
+  border-radius:4px; 
+  transition: transform 0.3s; 
+}
+.flags img:hover { transform: scale(1.5); }
+
+.info-cards {
+  position: fixed; left:50%; transform:translateX(-50%);
+  bottom:90px; display:flex; flex-direction:column; gap:4px;
+  z-index:1; align-items:center; color:#888; font-size:0.9rem;
+  text-align:center;
+}
+.info-cards div { cursor: pointer; transition: color 0.3s; }
+.info-cards div:hover { color: #00ffff; }
+
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
 <body>
 
-  <!-- ЕДИНЫЙ НЕПРЕРЫВНЫЙ ФОН ДЛЯ ВСЕЙ СТРАНИЦЫ -->
-  <div class="bg-fixed" aria-hidden="true"></div>
+<audio id="bg-music" loop>
+  <source src="audio.mp3" type="audio/mpeg">
+  <source src="audio.ogg" type="audio/ogg">
+</audio>
 
-  <!-- ============ 0. КОНВЕРТ ============ -->
-  <div class="invitation-screen" id="invitationScreen">
-    <div class="bg-particles" id="bgParticles"></div>
+<canvas id="stars"></canvas>
 
-    <div class="invitation-wrapper">
-      <div class="lang-switcher" id="langSwitcher">
-        <button class="lang-switcher-btn" title="Выбрать язык">RU</button>
-      </div>
-      <div class="envelope-float" id="envelopeFloat" style="margin-top: 25vh;">
+<div class="hero">
+  <h1>CJ3DREAMS</h1>
+  <p id="glitch-text">a cj & 3 dreams chaser</p>
+  <small class="cursor-blink">cj = computer jockey — anyone that uses a computer for their job or is overly zealous in their personal use of said computer</small>
+</div>
 
+<div class="flags">
+  <small>my visited countries tracker:</small>
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/de.svg" alt="Germany">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/dk.svg" alt="Denmark">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/fr.svg" alt="France">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/kz.svg" alt="Kazakhstan">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/tj.svg" alt="Tajikistan">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/tr.svg" alt="Turkey">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/uz.svg" alt="Uzbekistan">
+<img src="https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/us.svg" alt="USA">
+</div>
 
-        <div class="envelope-3d" id="envelope3d">
+<footer>
+  <span>audio</span>
+  <span>video</span>
+  <span>photo</span>
+  <span>coding</span>
+  <span>moding</span>
+  <span>crafting</span>
+</footer>
 
-          <!-- Задняя стенка конверта -->
-          <div class="env-back"></div>
+<div class="info-cards">
+  <div onclick="window.location='mailto:by@cj3dreams.me'">by@cj3dreams.me</div>
+  <div onclick="window.location='tel:+12244440644'">+1 (224) 444-0644</div>
+</div>
 
-          <!-- Карточка -->
-          <div class="env-card" id="envCard">
-            <div class="env-card-glow"></div>
-            <div class="env-card-inner">
-              <div class="ec-orn">✦</div>
-              <div class="ec-mono gold-shine" id="monogram">MJ</div>
-              <div class="ec-title">Wedding Invitation</div>
-              <div class="ec-divider"></div>
-              <div class="ec-text" data-lang-key="envelope_text">Мы рады пригласить Вас<br>наше свадебное торжество
-              </div>
-              <div class="ec-orn">✦</div>
-            </div>
-          </div>
+<script>
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
 
-          <!-- Карман -->
-          <div class="env-pocket"></div>
+let stars = [];
+function createStars() {
+  const w = canvas.width = window.innerWidth;
+  const h = canvas.height = window.innerHeight;
+  const starsCount = Math.floor((w*h)/5000);
+  stars = [];
+  for(let i=0;i<starsCount;i++){
+    stars.push({x:Math.random()*w, y:Math.random()*h, r:Math.random()*1.2, d:Math.random()*0.5+0.1});
+  }
+}
+createStars();
 
-          <!-- Ленты -->
-          <div class="env-ribbon-vertical" id="ribbonV"></div>
-          <div class="env-ribbon-horizontal" id="ribbonH"></div>
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = 'white';
+  ctx.beginPath();
+  stars.forEach(s=>{
+    ctx.moveTo(s.x,s.y);
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+  });
+  ctx.fill();
+  updateStars();
+}
 
-          <!-- Клапан -->
-          <div class="env-flap" id="envFlap"></div>
+function updateStars(){
+  stars.forEach(s=>{
+    s.y += s.d*0.2;
+    if(s.y>canvas.height) s.y=0;
+  });
+}
 
-          <!-- Восковая печать -->
-          <div class="env-seal" id="envSeal">
-            <div class="wax-glow"></div>
-            <div class="wax-body">
-              <div class="wax-stamp" id="waxMonogram"></div>
-            </div>
-            <div class="wax-crack crack-1"></div>
-            <div class="wax-crack crack-2"></div>
-          </div>
+function animate(){
+  drawStars();
+  requestAnimationFrame(animate);
+}
+animate();
 
-        </div>
-      </div>
+window.addEventListener('resize', ()=>{ createStars(); });
 
-      <div class="open-hint" id="openHint">
-        <span class="hint-glow" data-lang-key="open_hint">Снимите печать</span>
-        <div class="hint-arrow">↓</div>
-      </div>
-    </div>
+const bgMusic = document.getElementById("bg-music");
+document.body.addEventListener("click", ()=>{ bgMusic.play().catch(()=>{}); }, { once:true });
 
-    <div class="spark-field" id="sparkField"></div>
-  </div>
+const glitchText = document.getElementById('glitch-text');
+const originalText = glitchText.textContent;
+glitchText.innerHTML = originalText.split('').map(c => `<span>${c}</span>`).join('');
 
-  <!-- ============ ОСНОВНОЙ КОНТЕНТ ============ -->
-  <main class="content" id="content">
+const spans = glitchText.querySelectorAll('span');
 
-    <div class="bg-decorations" id="bgDecorations">
-      <div class="petals" id="petals"></div>
-      <div class="crystal-rain" id="crystalRain"></div>
-      <div class="ambient-sparkle" id="ambientSparkle"></div>
-      <div class="floral-drift" id="floralDrift"></div>
-    </div>
+function applyGlitch() {
+  glitchText.style.background = 'linear-gradient(90deg, #fff 20%, #aaa 50%, #fff 80%)';
+  glitchText.style.backgroundClip = 'text';
+  glitchText.style.webkitBackgroundClip = 'text';
+  glitchText.style.color = 'transparent';
 
+  spans.forEach(span => {
+    if(Math.random() < 0.15) { 
+      const x = (Math.random()-0.3) * 2.1; 
+      const y = (Math.random()-0.4) * 2.1;
+      const gray = Math.floor(Math.random() * 100 + 150);
+      span.style.position = 'relative';
+      span.style.left = `${x}px`;
+      span.style.top = `${y}px`;
+      span.style.color = `rgb(${gray},${gray},${gray})`;
+    } else {
+      span.style.left = '1px';
+      span.style.top = '0px';
+      span.style.color = '#aaa';
+    }
+  });
+}
 
-    <!-- 1. HERO -->
-    <section class="hero">
-      <div class="hero-bg"></div>
-      <div class="hero-overlay"></div>
+function resetGlitch() {
+  glitchText.style.background = 'none';
+  glitchText.style.color = '#aaa';
+  spans.forEach(span => {
+    span.style.left = '0px';
+    span.style.top = '0px';
+    span.style.color = '#aaa';
+  });
+}
 
-      <div class="hero-florals" aria-hidden="true">
-        <span class="floral fl-1">❀</span>
-        <span class="floral fl-2">❀</span>
-        <span class="floral fl-3">❀</span>
-        <span class="floral fl-4">❀</span>
-      </div>
+function glitchBurst(times=3, delay=120) {
+  if(times <= 0) {
+    setTimeout(() => glitchBurst(3, delay), 500 + Math.random()*1000);
+    return;
+  }
+  applyGlitch();
+  setTimeout(() => {
+    resetGlitch();
+    setTimeout(() => glitchBurst(times - 1, delay), delay);
+  }, delay);
+}
 
-      <div class="chandeliers">
-        <span></span><span></span><span></span><span></span><span></span>
-      </div>
+glitchBurst();
+</script>
 
-      <div class="hero-inner reveal">
-        <div class="hero-topline" data-lang-key="hero_topline">— Приглашаем —<br>— на свадебное торжество —</div>
-        <div class="hero-monogram">
-          <span class="mono-letter gold-shine" id="monogram">JM</span>
-        </div>
-
-        <h1 class="hero-names">
-          <span class="names-row fit-text" id="namesRow">
-            <span class="name-shine" id="groomName">Джамшед</span>
-            <span class="names-and">&amp;</span>
-            <span class="name-shine" id="brideName">Муздалифа</span>
-          </span>
-        </h1>
-
-        <div class="hero-line"></div>
-        <div class="hero-date" id="weddingDate">7 ноября 2026</div>
-
-        <div class="hero-quran">
-          <div class="hq-orn">❁❁❁</div>
-          <p class="hq-translate" data-lang-key="quran_1_translate">«И сотворили Мы вас парами»</p>
-          <div class="hq-ref" data-lang-key="quran_1_ref">— Коран, Сура 78 «Весть», аят 8 —</div>
-        </div>
-
-        <div class="scroll-down">
-          <div class="mouse"></div>
-          <span data-lang-key="scroll_down">Листайте вниз</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. ОБРАТНЫЙ ОТСЧЁТ + АЯТ -->
-    <section class="countdown-sec reveal">
-      <h2 class="section-title" data-lang-key="countdown_title">До торжества осталось</h2>
-      <div class="countdown" id="countdown">
-        <div class="cd-item"><span class="cd-num" id="cdDays">00</span><span class="cd-label"
-            data-lang-key="cd_days">дней</span></div>
-        <div class="cd-item"><span class="cd-num" id="cdHours">00</span><span class="cd-label"
-            data-lang-key="cd_hours">часов</span></div>
-        <div class="cd-item"><span class="cd-num" id="cdMins">00</span><span class="cd-label"
-            data-lang-key="cd_mins">минут</span></div>
-        <div class="cd-item"><span class="cd-num" id="cdSecs">00</span><span class="cd-label"
-            data-lang-key="cd_secs">секунд</span></div>
-      </div>
-    </section>
-
-    <section class="quran-sec reveal">
-      <div class="quran-frame">
-        <div class="quran-corner tl"></div>
-        <div class="quran-corner tr"></div>
-        <div class="quran-corner bl"></div>
-        <div class="quran-corner br"></div>
-        <div class="quran-orn">❁</div>
-        <p class="quran-translate" data-lang-key="quran_2_translate">«И из Его знамений — то, что Он сотворил для вас из
-          вас самих супругов, чтобы вы находили в них покой, и установил между вами любовь и милосердие»</p>
-        <div class="quran-divider"><span>❖</span></div>
-        <div class="quran-ref" data-lang-key="quran_2_ref">Сура Ар-Рум, 30:21</div>
-      </div>
-    </section>
-
-    <!-- 3. ТАЙМЛАЙН -->
-    <section class="timeline-sec">
-      <h2 class="section-title reveal" data-lang-key="timeline_title">Ход торжества</h2>
-      <div class="timeline" id="timeline">
-        <div class="tl-progress" id="tlProgress"></div>
-
-        <div class="tl-item reveal" data-side="left">
-          <div class="tl-dot"><span class="tl-icon">🌅</span></div>
-          <div class="tl-card">
-            <div class="tl-time">08:00</div>
-            <h3 class="tl-name" data-lang-key="tl_name_1">Оши Нахор</h3>
-            <p class="tl-desc" data-lang-key="tl_desc_1">Утренний плов — древняя традиция, объединяющая семьи за одним
-              дастарханом.</p>
-          </div>
-        </div>
-
-        <div class="tl-item reveal" data-side="right">
-          <div class="tl-dot"><span class="tl-icon">🤵</span></div>
-          <div class="tl-card">
-            <div class="tl-time">14:00</div>
-            <h3 class="tl-name" data-lang-key="tl_name_2">Ҷўра-домод</h3>
-            <p class="tl-desc" data-lang-key="tl_desc_2">Сбор друзей жениха и торжественные проводы по традиции.</p>
-          </div>
-        </div>
-
-        <div class="tl-item reveal" data-side="left">
-          <div class="tl-dot"><span class="tl-icon">💍</span></div>
-          <div class="tl-card">
-            <div class="tl-time">15:30</div>
-            <h3 class="tl-name" data-lang-key="tl_name_3">Церемония</h3>
-            <p class="tl-desc" data-lang-key="tl_desc_3">Торжественная регистрация и обмен клятвами перед близкими.</p>
-          </div>
-        </div>
-
-        <div class="tl-item reveal" data-side="right">
-          <div class="tl-dot"><span class="tl-icon">🍽️</span></div>
-          <div class="tl-card">
-            <div class="tl-time">18:00</div>
-            <h3 class="tl-name" data-lang-key="tl_name_4">Свадебный банкет</h3>
-            <p class="tl-desc" data-lang-key="tl_desc_4">Праздничный ужин, музыка и первый танец молодожёнов.</p>
-          </div>
-        </div>
-
-        <div class="tl-item reveal" data-side="left">
-          <div class="tl-dot"><span class="tl-icon">🎂</span></div>
-          <div class="tl-card">
-            <div class="tl-time">20:00</div>
-            <h3 class="tl-name" data-lang-key="tl_name_5">Свадебный торт</h3>
-            <p class="tl-desc" data-lang-key="tl_desc_5">Разрезание торта и сладкий момент под звёздным светом люстр.
-            </p>
-          </div>
-        </div>
-
-        <div class="tl-item reveal" data-side="right">
-          <div class="tl-dot"><span class="tl-icon">🌙</span></div>
-          <div class="tl-card">
-            <div class="tl-time">21:00</div>
-            <h3 class="tl-name" data-lang-key="tl_name_6">Завершение торжества</h3>
-            <p class="tl-desc" data-lang-key="tl_desc_6">Тёплые объятия, слова благодарности и добрые пожелания на
-              прощание.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. МЕСТО ПРОВЕДЕНИЯ -->
-    <section class="venue-sec reveal">
-      <h2 class="section-title" data-lang-key="venue_title">Место торжества</h2>
-      <div class="venue-card">
-        <div class="venue-florals">❀ ❦ ❀</div>
-        <div class="venue-icon">📍</div>
-        <h3 class="venue-name" id="venueName">Свадебный зал «Tajmahal»</h3>
-        <p class="venue-addr" id="venueAddr">Tajmahal Diamond, Худжанд</p>
-        <div class="venue-map">
-          <iframe id="mapFrame"
-            src="https://www.google.com/maps?q=Tajmahal+Diamonds+Hall&ll=40.2984074,69.6478986&z=18&output=embed"
-            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-        <a class="venue-btn" id="mapBtn" data-lang-key="open_map" href="https://maps.app.goo.gl/HWGpkXRQCatr9p626"
-          target="_blank">Открыть в картах</a>
-      </div>
-    </section>
-
-    <!-- 5. ФУТЕР -->
-    <footer class="footer reveal">
-
-      <!-- 1. Карусель поздравлений -->
-      <div class="wishes-count" id="wishesCount">0</div>
-      <div class="wishes-carousel swiper">
-        <div class="swiper-wrapper" id="wishesList"></div>
-        <div class="swiper-pagination"></div>
-      </div>
-
-      <div class="footer-divider"></div>
-
-      <!-- 2. Окно "Оставить поздравление" -->
-      <button class="rsvp-btn" id="wishOpenBtn" data-lang-key="wish_open_btn">Оставить поздравление</button>
-      <div class="modal-overlay" id="wishModal">
-        <div class="modal-box">
-          <span class="close-modal" id="wishModalClose">&times;</span>
-          <h3 data-lang-key="wish_modal_title">Оставить поздравление</h3>
-          <form id="wishForm" class="modal-form">
-            <div class="form-group">
-              <label for="wishName" data-lang-key="wish_name_label">Ваше имя</label>
-              <input type="text" id="wishName" required minlength="2">
-            </div>
-            <div class="form-group">
-              <label for="wishText" data-lang-key="wish_text_label">Ваше поздравление</label>
-              <textarea id="wishText" rows="4" required minlength="6"></textarea>
-            </div>
-            <div class="checkbox-group">
-              <input type="checkbox" id="wishConsent" required>
-              <label for="wishConsent" data-lang-key="wish_consent">Я даю согласие на публикацию моего поздравления на
-                сайте после предварительной проверки организаторами свадьбы и я понимаю, что окончательное решение о
-                публикации остаётся за ними.</label>
-            </div>
-            <button type="submit" class="rsvp-btn" data-lang-key="wish_submit">Отправить</button>
-          </form>
-          <div class="modal-success" id="wishSuccess">
-            <span class="emoji">📨</span>
-            <span data-lang-key="wish_sent_text">Спасибо! Ваше поздравление отправлено на модерацию и будет опубликовано
-              после проверки.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Сообщение снаружи (вместо кнопки после отправки) -->
-      <div id="wishSuccessOutside" class="modal-success" style="display: none;">
-        <span class="emoji">📨</span>
-        <span data-lang-key="wish_sent_text">Спасибо! Ваше поздравление отправлено на модерацию и будет опубликовано
-          после проверки.</span>
-      </div>
-
-      <div class="footer-divider"></div>
-
-      <!-- 3. Монограмма и имена (существующий блок) -->
-      <div class="footer-mono gold-shine" id="footMono">MJ</div>
-      <p class="footer-names">
-        <span class="fit-text" id="footNamesWrap">
-          <span class="name-shine" id="footNames">Джамшед</span>
-          <span class="names-and">&amp;</span>
-          <span class="name-shine">Муздалифа</span>
-        </span>
-      </p>
-      <p class="footer-date" id="footDate">07.11.2026</p>
-
-      <div class="footer-divider"></div>
-
-      <!-- 4. Модальное окно RSVP (открывается через старую кнопку) -->
-      <div class="modal-overlay" id="rsvpModal">
-        <div class="modal-box">
-          <span class="close-modal" id="rsvpModalClose">&times;</span>
-          <h3 data-lang-key="rsvp_modal_title">Подтверждение участия</h3>
-          <form id="rsvpForm" class="modal-form">
-            <div class="form-group">
-              <label for="rsvpName" data-lang-key="rsvp_name_label">Ваше имя</label>
-              <input type="text" id="rsvpName" required>
-            </div>
-            <div class="form-group">
-              <label for="rsvpPhone" data-lang-key="rsvp_phone_label">Телефон (необязательно)</label>
-              <input type="tel" id="rsvpPhone" placeholder="+ХХХ...">
-            </div>
-            <div class="form-group">
-              <label for="rsvpSide" data-lang-key="rsvp_side_label">Вы со стороны</label>
-              <select id="rsvpSide" required>
-                <option value="groom" data-lang-key="rsvp_side_groom" selected>Жениха</option>
-                <option value="bride" data-lang-key="rsvp_side_bride">Невесты</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="rsvpGuests" data-lang-key="rsvp_guests_label">Количество гостей</label>
-              <select id="rsvpGuests" required>
-                <option value="1" selected>1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4+">4+</option>
-              </select>
-            </div>
-            <button type="submit" class="rsvp-btn" data-lang-key="rsvp_submit">Подтвердить</button>
-          </form>
-
-          <div class="modal-success" id="rsvpSuccess">
-            <span class="emoji">✅</span>
-            <span data-lang-key="rsvp_sent_text">Спасибо! Мы учли ваше присутствие.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Сообщение снаружи (вместо кнопки после отправки) -->
-      <div id="rsvpSuccessOutside" class="modal-success" style="display: none;">
-        <span class="emoji">✅</span>
-        <span data-lang-key="rsvp_sent_text">Спасибо! Мы учли ваше присутствие.</span>
-      </div>
-
-      <!-- 5. Старый блок RSVP (теперь он открывает модалку, номер телефона убран) -->
-      <div class="footer-rsvp">
-        <div class="rsvp-orn">❦</div>
-        <h2 class="rsvp-title" data-lang-key="rsvp_title">Будем рады видеть вас</h2>
-        <!-- Кнопка теперь открывает модальное окно, а не звонит -->
-        <button class="rsvp-btn" id="rsvpOpenBtn" data-lang-key="rsvp_btn">Подтвердить участие</button>
-      </div>
-
-      <!-- 6. Сердечки -->
-      <div class="footer-hearts">❤</div>
-    </footer>
-  </main>
-
-  <!-- Кнопка музыки -->
-  <button class="music-btn" id="musicBtn" title="Музыка">♪</button>
-  <audio id="bgMusic" loop preload="auto">
-    <source src="assets/audio/audio.opus" type="audio/mpeg">
-  </audio>
-
-  <!-- Подключаем JavaScript -->
-  <script src="js/config.js"></script>
-  <script src="js/utils.js"></script>
-  <script src="js/i18n.js"></script>
-  <script src="js/0-envelope.js"></script>
-  <script src="js/1-hero.js"></script>
-  <script src="js/2-countdown.js"></script>
-  <script src="js/3-timeline.js"></script>
-  <script src="js/4-venue.js"></script>
-  <script src="js/5-footer.js"></script>
-  <script src="js/music.js"></script>
-  <script src="js/main.js"></script>
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 </body>
-
 </html>
