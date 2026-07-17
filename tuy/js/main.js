@@ -1,18 +1,3 @@
-/* ===== ПРИМЕНЕНИЕ КОНФИГА ===== */
-function applyConfig(){
-  document.getElementById('groomName').textContent = CONFIG.groomName;
-  document.getElementById('brideName').textContent = CONFIG.brideName;
-  document.getElementById('weddingDate').textContent = CONFIG.weddingDateText;
-  document.getElementById('venueName').textContent = CONFIG.venueName;
-  document.getElementById('venueAddr').textContent = CONFIG.venueAddr;
-  document.getElementById('footNamesWrap').innerHTML =
-    `<span class="name-shine">${CONFIG.groomName}</span><span class="names-and">&amp;</span><span class="name-shine">${CONFIG.brideName}</span>`;
-  document.getElementById('footDate').textContent = CONFIG.weddingDateShort;
-  document.getElementById('monogram').textContent = CONFIG.monogram;
-  document.getElementById('waxMonogram').textContent = CONFIG.waxMonogram;
-  document.getElementById('footMono').textContent = CONFIG.monogram;
-}
-
 /* ===== REVEAL ===== */
 function initReveal(){
   const io = new IntersectionObserver((entries)=>{
@@ -28,10 +13,13 @@ function initReveal(){
 
 /* ===== ПЕРЕВОДЫ (функции) ===== */
 function setLanguage(lang) {
-  if (!TRANSLATIONS[lang]) lang = 'en'; // если язык не найден, ставим английский
+  if (!TRANSLATIONS[lang]) lang = 'en';
   const data = TRANSLATIONS[lang];
   
-  // 1. Меняем все тексты по data-lang-key
+  // 1. Меняем заголовок страницы
+  document.title = data.page_title;
+  
+  // 2. Меняем все тексты по data-lang-key
   document.querySelectorAll('[data-lang-key]').forEach(el => {
     const key = el.getAttribute('data-lang-key');
     if (data[key]) {
@@ -39,7 +27,7 @@ function setLanguage(lang) {
     }
   });
 
-  // 2. Меняем данные из CONFIG (имена, даты, залы)
+  // 3. Меняем данные из CONFIG (имена, даты, залы) – они берутся из перевода
   document.getElementById('groomName').textContent = data.groom_name;
   document.getElementById('brideName').textContent = data.bride_name;
   document.getElementById('weddingDate').textContent = data.date_text;
@@ -48,9 +36,9 @@ function setLanguage(lang) {
   document.getElementById('footNamesWrap').innerHTML =
     `<span class="name-shine">${data.groom_name}</span><span class="names-and">&amp;</span><span class="name-shine">${data.bride_name}</span>`;
   document.getElementById('footDate').textContent = data.date_short;
-  document.getElementById('footMono').textContent = CONFIG.monogram; // монограмма не переводится
+  // footMono не трогаем – она задаётся один раз при загрузке
 
-  // 3. Обновляем кнопку переключателя (TG заменяем на TJ)
+  // 4. Обновляем кнопку переключателя (TG заменяем на TJ)
   const switcherBtn = document.querySelector('.lang-switcher-btn');
   if (switcherBtn) {
     const displayLang = lang === 'tg' ? 'TJ' : lang.toUpperCase();
@@ -62,11 +50,9 @@ function detectLanguage() {
   const lang = navigator.language || navigator.languages?.[0] || 'en';
   if (lang.startsWith('tg') || lang.startsWith('tj')) return 'tg';
   if (lang.startsWith('ru')) return 'ru';
-  // Для всех остальных (включая норвежский и т.п.) отдаём английский
   return 'en';
 }
 
-// Функция для ручного переключения (цикл: ru → en → tg → ru)
 // Функция для ручного переключения (цикл: ru → en → tg → ru)
 function switchLanguage() {
   const switcherBtn = document.querySelector('.lang-switcher-btn');
@@ -81,11 +67,10 @@ function switchLanguage() {
   setLanguage(next);
   localStorage.setItem('preferredLang', next);
 
-  // Перезагружаем карусель и счётчик при смене языка
-  if (typeof refreshWishes === 'function') {
-    refreshWishes();
-  }
+  // Карусель НЕ перезагружаем – чтобы не сбрасывать позицию
+  // (тексты поздравлений не переводятся, они остаются на языке автора)
 }
+
 /* ===== ЗАПУСК ===== */
 document.addEventListener('DOMContentLoaded', function(){
   if ('scrollRestoration' in history) {
@@ -93,10 +78,12 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   window.scrollTo(0, 0);
 
-  applyConfig();
+  // Устанавливаем монограммы (не зависят от языка) – только один раз
+  document.getElementById('monogram').textContent = CONFIG.monogram;
+  document.getElementById('waxMonogram').textContent = CONFIG.waxMonogram;
+  document.getElementById('footMono').textContent = CONFIG.monogram;
 
   // === ВЫБОР ЯЗЫКА ===
-  // Сначала проверяем, есть ли сохранённый выбор пользователя
   let savedLang = localStorage.getItem('preferredLang');
   if (savedLang && TRANSLATIONS[savedLang]) {
     setLanguage(savedLang);
@@ -104,12 +91,11 @@ document.addEventListener('DOMContentLoaded', function(){
     setLanguage(detectLanguage());
   }
 
-  // Инициализируем кнопку переключателя языка (если есть)
+  // Инициализируем кнопку переключателя языка
   const switcherBtn = document.querySelector('.lang-switcher-btn');
   if (switcherBtn) {
     switcherBtn.addEventListener('click', switchLanguage);
   }
-  // =========================
 
   setVH();
   makeParticles();

@@ -13,6 +13,7 @@
   --font-script:'Great Vibes',cursive;
   --font-arabic: 'Amiri', serif; 
   --vh:1vh;
+  color-scheme: light only;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}

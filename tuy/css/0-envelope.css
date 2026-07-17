@@ -317,9 +317,14 @@
 /* ---------- Переключатель языка ---------- */
 .lang-switcher {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: max(30px, env(safe-area-inset-top, 30px));
+  right: max(25px, env(safe-area-inset-right, 25px));
   z-index: 20;
+}
+.lang-switcher.hide {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 .lang-switcher-btn {
   background: rgba(212, 175, 55, 0.25);

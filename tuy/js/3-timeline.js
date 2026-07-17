@@ -1,5 +1,5 @@
 /* ===== ПРОГРЕСС-БАР ТАЙМЛАЙНА (Задержка 4 секунды для обоих) ===== */
-(function() {
+(function () {
   // Задержка теперь 4000мс (4 секунды) - появляются вместе
   setTimeout(() => {
     const tl = document.getElementById('timeline');
@@ -8,7 +8,7 @@
 
     // Включаем серую линию (она вырастет с 0px до 2px)
     tl.classList.add('ready');
-    
+
     // Включаем золотой прогресс-бар
     prog.classList.add('show');
 
@@ -23,6 +23,15 @@
       prog.style.height = (visible / total * 100) + '%';
     };
 
+    // Обработчик изменения размера окна
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        updateProgress();
+      }, 100); // дебаунс 100 мс
+    });
+
     // Обработчик скролла с requestAnimationFrame
     window.addEventListener('scroll', () => {
       if (!ticking) {
@@ -35,5 +44,5 @@
     });
 
     setTimeout(updateProgress, 100);
-  }, 5000); 
+  }, 5000);
 })();

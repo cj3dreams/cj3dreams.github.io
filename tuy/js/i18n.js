@@ -1,5 +1,6 @@
 const TRANSLATIONS = {
   ru: {
+    page_title: "Приглашение на свадьбу Джамшеда и Муздалифы",
     groom_name: " Джамшед ",
     bride_name: " Муздалифа ",
     venue_name: "Свадебный зал «TajMahal»",
@@ -55,6 +56,7 @@ const TRANSLATIONS = {
     months: ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"]
   },
   en: {
+    page_title: "Wedding Invitation of Jamshed and Muzdalifa",
     groom_name: " Jamshed ",
     bride_name: " Muzdalifa ",
     venue_name: "«TajMahal» Wedding Hall",
@@ -108,6 +110,7 @@ const TRANSLATIONS = {
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   },
   tg: {
+    page_title: "Даъватнома ба базми Ҷамшед ва Муздалифа",
     groom_name: " Джамшед ", 
     bride_name: " Муздалифа ",
     venue_name: "Толори бошукӯҳи «TajMahal»", 

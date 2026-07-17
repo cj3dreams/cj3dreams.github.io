@@ -41,6 +41,13 @@
   function openEnvelope() {
     if (isOpened) return;
     isOpened = true;
+    const langSwitcher = document.getElementById('langSwitcher');
+    if (langSwitcher) {
+      langSwitcher.classList.add('hide');
+      setTimeout(() => {
+        langSwitcher.style.display = 'none';
+      }, 400);
+    }
 
     if (typeof startMusic === 'function') startMusic();
 
