@@ -34,7 +34,12 @@
   50%{transform:translateY(-14px) rotate(4deg);opacity:1;}
 }
 
-.crystal-rain{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+.crystal-rain{overflow:hidden;}
+.crystal-rain.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
 .crystal{position:absolute;top:-20px;width:2px;height:14px;border-radius:2px;
   background:linear-gradient(to bottom,rgba(244,227,161,.9),transparent);
   box-shadow:0 0 6px rgba(244,227,161,.7);animation:crystalFall linear infinite;}

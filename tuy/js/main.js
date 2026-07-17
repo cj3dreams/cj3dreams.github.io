@@ -117,4 +117,22 @@ document.addEventListener('DOMContentLoaded', function(){
   window.makeFloralDrift = makeFloralDrift;
   window.fitNames = fitNames;
   window.setVH = setVH;
+
+  // === Скрываем золотой дождь, когда Hero не в видимости ===
+  const heroSection = document.querySelector('.hero');
+  const crystalRain = document.getElementById('crystalRain');
+  if (heroSection && crystalRain) {
+    // Сразу скрываем, если Hero уже не виден (на случай, если пользователь открыл и сразу скроллит)
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) {
+          crystalRain.classList.add('hidden');
+        } else {
+          crystalRain.classList.remove('hidden');
+        }
+      });
+    }, { threshold: 0.1 });
+    heroObserver.observe(heroSection);
+  }
+
 });

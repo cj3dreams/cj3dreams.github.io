@@ -33,8 +33,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function formatDate(dateString, lang) {
     if (!dateString) return '';
-    const date = new Date(dateString);
+
+    let date;
+    if (typeof dateString === 'object' && dateString.iso) {
+      date = new Date(dateString.iso);
+    } else {
+      date = new Date(dateString);
+    }
+
     if (isNaN(date.getTime())) return '';
+
     const day = date.getDate();
     const monthIndex = date.getMonth();
     const year = date.getFullYear();
@@ -63,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
     `;
   }
 
-  // Загрузка одобренных поздравлений через Cloud Function
   // Загрузка одобренных поздравлений через Cloud Function
   async function loadWishes(page) {
     if (isLoading || !hasMore) return;
@@ -229,10 +236,33 @@ document.addEventListener('DOMContentLoaded', function () {
   const rsvpPhoneInput = document.getElementById('rsvpPhone');
   if (rsvpPhoneInput) {
     rsvpPhoneInput.addEventListener('input', function () {
-      this.value = this.value.replace(/[^0-9+]/g, '');
+      // 1. Удалить всё, кроме цифр и '+'
+      let val = this.value.replace(/[^0-9+]/g, '');
+
+      // 2. Обработать плюсы: только первый символ может быть '+'
+      const plusIndex = val.indexOf('+');
+      if (plusIndex === 0) {
+        // Плюс уже в начале – убираем все остальные плюсы
+        val = '+' + val.slice(1).replace(/\+/g, '');
+      } else if (plusIndex > 0) {
+        // Плюс не в начале – удаляем все плюсы и добавляем один в начало
+        val = '+' + val.replace(/\+/g, '');
+      } else {
+        // Нет плюса – добавляем в начало, если есть цифры
+        if (val.length > 0) {
+          val = '+' + val;
+        }
+      }
+
+      // 3. Ограничить длину (например, 15 символов, включая '+')
+      const MAX_LENGTH = 15;
+      if (val.length > MAX_LENGTH) {
+        val = val.slice(0, MAX_LENGTH);
+      }
+
+      this.value = val;
     });
   }
-
   if (localStorage.getItem('rsvp_sent') === 'true') {
     rsvpOpenBtn.style.display = 'none';
     rsvpSuccessOutside.style.display = 'block';
