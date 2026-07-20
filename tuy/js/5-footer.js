@@ -55,8 +55,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const lang = localStorage.getItem('preferredLang') || 'ru';
     const dateStr = formatDate(wish.createdAt, lang);
     let text = wish.text || '';
-    if (text.length > 100) {
-      text = text.substring(0, 100) + '...';
+    if (text.length > 187) {
+      text = text.substring(0, 187) + '...';
     }
     const emoji = getRandomEmoji();
     return `
