@@ -3,40 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Открываем настройки (только схемы)</title>
+    <title>Открываем настройки Chrome / Android</title>
     <style>
         body {
-            font-family: sans-serif;
-            background: #111;
+            background: #0d0d0d;
             color: #eee;
-            text-align: center;
+            font-family: 'Courier New', monospace;
             padding: 20px;
+            text-align: center;
         }
         #counter {
-            font-size: 60px;
+            font-size: 72px;
             font-weight: bold;
             color: #4fc3f7;
+            margin: 10px 0;
         }
         #log {
-            background: #1a1a1a;
-            padding: 10px;
-            border-radius: 8px;
-            max-height: 300px;
+            max-height: 350px;
             overflow-y: auto;
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 10px;
             text-align: left;
-            font-size: 13px;
-            font-family: monospace;
+            font-size: 12px;
+            border: 1px solid #333;
             margin-top: 20px;
         }
         .entry {
             padding: 3px 0;
-            border-bottom: 1px solid #333;
-        }
-        .uri {
-            color: #ffb74d;
+            border-bottom: 1px solid #2a2a2a;
         }
         .num {
             color: #4fc3f7;
+        }
+        .uri {
+            color: #ffb74d;
+            word-break: break-all;
+        }
+        .note {
+            color: #888;
+            font-size: 14px;
+            margin-top: 10px;
         }
         button {
             padding: 10px 25px;
@@ -47,56 +54,96 @@
             font-weight: bold;
             color: #000;
             cursor: pointer;
-            margin: 10px 0;
+            margin: 15px 0;
         }
     </style>
 </head>
 <body>
 
-    <h1>🔧 Бьём в настройки</h1>
+    <h1>⚙️ Бьём в настройки</h1>
     <div id="counter">0</div>
-    <p>попыток (каждую секунду)</p>
-    <button onclick="addMoreSchemes()">➕ Добавить ещё схем</button>
+    <div class="note">каждую секунду — новая попытка (всего <span id="total">0</span> уникальных URI)</div>
+    <button onclick="addMore()">➕ Добавить ещё 30 вариантов</button>
     <div id="log">Лог...</div>
 
     <script>
-        // ---------- ТОЛЬКО ПРОСТЫЕ СХЕМЫ (без intent) ----------
-        let schemes = [
+        // ---------- БАЗОВЫЕ URI (работают с Chrome) ----------
+        let uris = [
+            // ----- Chrome settings (самые вероятные) -----
+            'chrome://settings/',
+            'chrome://settings/content',
+            'chrome://settings/privacy',
+            'chrome://settings/security',
+            'chrome://settings/syncSetup',
+            'chrome://settings/passwords',
+            'chrome://settings/autofill',
+            'chrome://settings/search',
+            'chrome://settings/languages',
+            'chrome://settings/downloads',
+            'chrome://settings/help',
+            'chrome://settings/system',
+            'chrome://settings/accessibility',
+            'chrome://settings/people',
+
+            // ----- Альтернативные схемы для Chrome -----
+            'googlechrome://settings/',
+            'googlechrome://settings/content',
+            'googlechrome://settings/privacy',
+            'googlechrome://settings/security',
+            'com.google.chrome://settings/',
+
+            // ----- Intent через пакет Chrome (не action, а просто открыть приложение) -----
+            'intent://#Intent;package=com.android.chrome;end',
+            'intent://#Intent;package=com.android.chrome;action=android.intent.action.VIEW;end',
+
+            // ----- Попытка открыть настройки приложений (Android) через пакет Chrome -----
+            'intent://#Intent;package=com.android.chrome;action=android.settings.APPLICATION_SETTINGS;end',
+            'intent://#Intent;package=com.android.chrome;component=com.android.chrome/.Settings;end',
+
+            // ----- Простые схемы (могут открыть что-то) -----
             'settings://',
             'system_settings://',
             'android.settings://',
-            'settings:/',
-            'system-settings://',
-            'android-settings://',
-            'config://',
-            'device_settings://',
-            'com.android.settings://',
-            'settings.app://',
-            'system://settings',
-            'android://settings',
-            'settings.ui://',
-            'sys_settings://',
-            'settings_android://'
+            'chrome-settings://',
+            'browser://settings',
         ];
 
-        // Дополнительные вариации (чтобы было больше)
-        for (let i = 0; i < 30; i++) {
-            schemes.push(`settings${i}://`);
-            schemes.push(`system${i}://`);
+        // ---------- ГЕНЕРИРУЕМ МНОГО ВАРИАНТОВ (чтобы было >101) ----------
+        function generateMore() {
+            const extra = [];
+            // Добавляем вариации с extra-параметрами
+            for (let i = 0; i < 80; i++) {
+                extra.push(`chrome://settings?param=${i}`);
+                extra.push(`googlechrome://settings?param=${i}`);
+                extra.push(`intent://#Intent;package=com.android.chrome;extra_${i}=value_${i};end`);
+                extra.push(`intent://#Intent;package=com.android.chrome;component=com.android.chrome/.Settings;extra_${i}=${i};end`);
+                // Добавляем какие-то специфические пути
+                extra.push(`chrome://settings/${i}`);
+                extra.push(`googlechrome://settings/${i}`);
+            }
+            return extra;
         }
 
+        // Добавляем сгенерированные
+        uris = uris.concat(generateMore());
+
         // Убираем дубли
-        schemes = [...new Set(schemes)];
+        uris = [...new Set(uris)];
+
+        // Показываем общее количество
+        document.getElementById('total').textContent = uris.length;
 
         let index = 0;
         let attempts = 0;
         const log = document.getElementById('log');
+        const counter = document.getElementById('counter');
 
-        function tryOpenScheme() {
-            const uri = schemes[index % schemes.length];
+        // ---------- ФУНКЦИЯ ПОПЫТКИ (через iframe) ----------
+        function tryOpen() {
+            const uri = uris[index % uris.length];
             index++;
             attempts++;
-            document.getElementById('counter').textContent = attempts;
+            counter.textContent = attempts;
 
             // Логируем
             const entry = document.createElement('div');
@@ -104,40 +151,59 @@
             entry.innerHTML = `<span class="num">#${attempts}</span> <span class="uri">${uri}</span>`;
             log.appendChild(entry);
             log.scrollTop = log.scrollHeight;
-            if (log.children.length > 150) log.removeChild(log.children[0]);
+            if (log.children.length > 200) log.removeChild(log.children[0]);
 
-            // Открываем через iframe (без перезагрузки страницы)
+            // Пытаемся открыть через iframe (страница не перезагружается)
             const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
-            iframe.src = uri;   // ← Строго как есть, браузер не добавляет домен
+            iframe.src = uri;
             document.body.appendChild(iframe);
-            setTimeout(() => iframe.remove(), 1500);
+
+            // Удаляем iframe через 2 секунды
+            setTimeout(() => {
+                if (iframe.parentNode) iframe.remove();
+            }, 2000);
         }
 
-        // Запуск
-        tryOpenScheme();
-        setInterval(tryOpenScheme, 1000);
+        // ---------- ЗАПУСК ----------
+        tryOpen();
+        const interval = setInterval(tryOpen, 1000);
 
-        // Кнопка для добавления новых (можно дописать любые)
-        window.addMoreSchemes = function() {
-            const extra = [
-                'settings_extra://',
-                'android_settings://',
-                'device://settings',
-                'systemconfig://',
-                'preferences://'
+        // ---------- КНОПКА ДОБАВИТЬ ЕЩЁ ----------
+        window.addMore = function() {
+            const newUris = [
+                'chrome://settings/clearBrowserData',
+                'chrome://settings/cookies',
+                'chrome://settings/siteData',
+                'chrome://settings/securityKeys',
+                'chrome://settings/addresses',
+                'chrome://settings/paymentMethods',
+                'chrome://settings/notifications',
+                'chrome://settings/permissions',
+                'chrome://settings/screenLock',
+                'chrome://settings/autofill',
+                'googlechrome://settings/clearBrowserData',
+                'googlechrome://settings/cookies',
+                'intent://#Intent;package=com.android.chrome;action=android.settings.SECURITY_SETTINGS;end',
+                'intent://#Intent;package=com.android.chrome;action=android.settings.PRIVACY_SETTINGS;end',
+                'intent://#Intent;package=com.android.chrome;action=android.settings.SOUND_SETTINGS;end',
+                'intent://#Intent;package=com.android.chrome;action=android.settings.DISPLAY_SETTINGS;end',
+                'settings://chrome',
+                'chrome-settings://main',
             ];
             let added = 0;
-            for (let s of extra) {
-                if (!schemes.includes(s)) {
-                    schemes.push(s);
+            for (let u of newUris) {
+                if (!uris.includes(u)) {
+                    uris.push(u);
                     added++;
                 }
             }
-            alert(`Добавлено ${added} новых схем. Всего: ${schemes.length}`);
+            document.getElementById('total').textContent = uris.length;
+            alert(`Добавлено ${added} новых. Всего: ${uris.length}`);
         };
 
-        console.log('Всего схем:', schemes.length);
+        // Остановка через 60 секунд (опционально)
+        // setTimeout(() => { clearInterval(interval); }, 60000);
     </script>
 </body>
 </html>
