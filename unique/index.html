@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Открыть RingCentral</title>
     <script type="text/javascript">
-        // Мгновенный переход в приложение RingCentral (без запасных вариантов)
-        window.location.replace('intent://#Intent;package=com.glip.mobile;action=android.intent.action.VIEW;end');
+        // Используем официальную URI-схему rcmobile://
+        window.location.replace('rcmobile://');
     </script>
 </head>
 <body>
-    <!-- Сообщение видно только в том случае, если скрипт не сработал (например, браузер заблокировал intent) -->
     <p style="font-family: sans-serif; text-align: center; margin-top: 50px; font-size: 18px;">
-        Если приложение не открылось, возможно, оно не установлено или браузер не поддерживает такой переход.
+        Если приложение не открылось, возможно, оно не установлено.
     </p>
 </body>
 </html>
