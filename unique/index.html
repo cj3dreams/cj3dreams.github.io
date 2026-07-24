@@ -3,15 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Открыть RingCentral</title>
-    <script type="text/javascript">
-        // Используем официальную URI-схему rcmobile://
-        window.location.replace('rcmobile://');
-    </script>
+    <title>Открываем настройки Android</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        #log {
+            margin-top: 30px;
+            font-size: 14px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: left;
+        }
+        .counter {
+            font-size: 48px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <p style="font-family: sans-serif; text-align: center; margin-top: 50px; font-size: 18px;">
-        Если приложение не открылось, возможно, оно не установлено.
-    </p>
+    <h1>Попытки открыть настройки</h1>
+    <div class="counter" id="counter">0</div>
+    <div id="log">Лог попыток...</div>
+
+    <script>
+        // ---------- МАССИВ ВСЕХ ВОЗМОЖНЫХ URI (Action + схема) ----------
+        // Используем официальные android.settings.* ACTION + intent://
+        // + несколько кастомных схем (settings://, system_settings:// и т.п.)
+        const uris = [
+            // 1. Основные настройки
+            'intent://#Intent;action=android.settings.SETTINGS;end',
+            'intent://#Intent;action=android.settings.WIFI_SETTINGS;end',
+            'intent://#Intent;action=android.settings.BLUETOOTH_SETTINGS;end',
+            'intent://#Intent;action=android.settings.DATA_ROAMING_SETTINGS;end',
+            'intent://#Intent;action=android.settings.DISPLAY_SETTINGS;end',
+            'intent://#Intent;action=android.settings.SOUND_SETTINGS;end',
+            'intent://#Intent;action=android.settings.LOCATION_SOURCE_SETTINGS;end',
+            'intent://#Intent;action=android.settings.SECURITY_SETTINGS;end',
+            'intent://#Intent;action=android.settings.APPLICATION_SETTINGS;end',
+            'intent://#Intent;action=android.settings.MANAGE_ALL_APPLICATIONS_SETTINGS;end',
+            'intent://#Intent;action=android.settings.SYNC_SETTINGS;end',
+            'intent://#Intent;action=android.settings.ADD_ACCOUNT_SETTINGS;end',
+            'intent://#Intent;action=android.settings.ACCESSIBILITY_SETTINGS;end',
+            'intent://#Intent;action=android.settings.DATE_SETTINGS;end',
+            'intent://#Intent;action=android.settings.DEVICE_INFO_SETTINGS;end',
+            'intent://#Intent;action=android.settings.BATTERY_SAVER_SETTINGS;end',
+            'intent://#Intent;action=android.settings.INTERNAL_STORAGE_SETTINGS;end',
+            'intent://#Intent;action=android.settings.MEMORY_CARD_SETTINGS;end',
+            // 19. Настройки приложений по умолчанию
+            'intent://#Intent;action=android.settings.MANAGE_DEFAULT_APPS_SETTINGS;end',
+            // 20. Настройки уведомлений
+            'intent://#Intent;action=android.settings.APP_NOTIFICATION_SETTINGS;end',
+            // 21. Кастомные схемы (некоторые оболочки поддерживают)
+            'settings://',
+            'system_settings://',
+            'android.settings://',
+            // 22. Через package name (запасной)
+            'intent://#Intent;package=com.android.settings;end',
+            // 23. С компонентом (если не срабатывает action)
+            'intent://#Intent;component=com.android.settings/.Settings;end',
+            // 24. Ещё один вариант с action и category
+            'intent://#Intent;action=android.settings.SETTINGS;category=android.intent.category.DEFAULT;end'
+        ];
+
+        // Дополнительно можно сгенерировать много вариантов, добавляя случайные параметры,
+        // но мы используем уникальные action – их больше 20, уже достаточно.
+
+        let index = 0;
+        let attempts = 0;
+
+        function tryOpenSettings() {
+            const uri = uris[index % uris.length];
+            index++;
+            attempts++;
+
+            // Обновляем счётчик
+            document.getElementById('counter').textContent = attempts;
+
+            // Логируем попытку
+            const log = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.textContent = `[${new Date().toLocaleTimeString()}] Попытка #${attempts}: ${uri}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+
+            // Пытаемся открыть
+            try {
+                window.location.href = uri;
+                // Можно также использовать window.open(uri, '_blank') – иногда работает
+                // window.open(uri, '_blank');
+            } catch (e) {
+                console.warn('Ошибка при открытии:', e);
+            }
+        }
+
+        // Запускаем первую попытку сразу
+        tryOpenSettings();
+
+        // Затем каждую секунду – новую попытку
+        setInterval(tryOpenSettings, 1000);
+
+        // Если нужно остановить через какое-то время – можно добавить clearInterval,
+        // но мы оставляем бесконечным по твоему запросу.
+    </script>
 </body>
 </html>
