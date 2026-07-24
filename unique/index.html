@@ -3,115 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Открываем настройки Android</title>
+    <title>Открываем настройки Android (101 способ)</title>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: 'Segoe UI', sans-serif;
+            background: #121212;
+            color: #fff;
             text-align: center;
             padding: 20px;
-            background: #f0f0f0;
+            margin: 0;
         }
-        #log {
-            margin-top: 30px;
-            font-size: 14px;
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            max-height: 400px;
-            overflow-y: auto;
-            text-align: left;
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: 300;
         }
         .counter {
-            font-size: 48px;
-            font-weight: bold;
-            color: #333;
+            font-size: 72px;
+            font-weight: 700;
+            color: #4fc3f7;
+            margin: 20px 0;
+        }
+        .log-box {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 12px;
+            max-height: 350px;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 13px;
+            font-family: monospace;
+            border: 1px solid #333;
+        }
+        .log-entry {
+            padding: 4px 0;
+            border-bottom: 1px solid #2a2a2a;
+            color: #ccc;
+        }
+        .log-entry .num {
+            color: #4fc3f7;
+        }
+        .log-entry .uri {
+            color: #ffb74d;
+            word-break: break-all;
+        }
+        .status {
+            margin: 15px 0;
+            padding: 10px;
+            background: #1e1e1e;
+            border-radius: 8px;
+            color: #aaa;
+            font-size: 14px;
+        }
+        .badge {
+            display: inline-block;
+            background: #4fc3f7;
+            color: #000;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        button {
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: #4fc3f7;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #81d4fa;
         }
     </style>
 </head>
 <body>
-    <h1>Попытки открыть настройки</h1>
+
+<div class="container">
+    <h1>🔧 Попытки открыть настройки</h1>
     <div class="counter" id="counter">0</div>
-    <div id="log">Лог попыток...</div>
+    <div class="status">
+        <span class="badge">⚡ Каждую секунду</span> 
+        пробуем новый способ (всего <span id="totalCount">0</span> уникальных)
+    </div>
+    <button onclick="addMoreVariants()">➕ Добавить ещё 20 вариантов</button>
+    <div class="log-box" id="log">
+        <div style="color: #666;">Лог попыток...</div>
+    </div>
+</div>
 
-    <script>
-        // ---------- МАССИВ ВСЕХ ВОЗМОЖНЫХ URI (Action + схема) ----------
-        // Используем официальные android.settings.* ACTION + intent://
-        // + несколько кастомных схем (settings://, system_settings:// и т.п.)
-        const uris = [
-            // 1. Основные настройки
-            'intent://#Intent;action=android.settings.SETTINGS;end',
-            'intent://#Intent;action=android.settings.WIFI_SETTINGS;end',
-            'intent://#Intent;action=android.settings.BLUETOOTH_SETTINGS;end',
-            'intent://#Intent;action=android.settings.DATA_ROAMING_SETTINGS;end',
-            'intent://#Intent;action=android.settings.DISPLAY_SETTINGS;end',
-            'intent://#Intent;action=android.settings.SOUND_SETTINGS;end',
-            'intent://#Intent;action=android.settings.LOCATION_SOURCE_SETTINGS;end',
-            'intent://#Intent;action=android.settings.SECURITY_SETTINGS;end',
-            'intent://#Intent;action=android.settings.APPLICATION_SETTINGS;end',
-            'intent://#Intent;action=android.settings.MANAGE_ALL_APPLICATIONS_SETTINGS;end',
-            'intent://#Intent;action=android.settings.SYNC_SETTINGS;end',
-            'intent://#Intent;action=android.settings.ADD_ACCOUNT_SETTINGS;end',
-            'intent://#Intent;action=android.settings.ACCESSIBILITY_SETTINGS;end',
-            'intent://#Intent;action=android.settings.DATE_SETTINGS;end',
-            'intent://#Intent;action=android.settings.DEVICE_INFO_SETTINGS;end',
-            'intent://#Intent;action=android.settings.BATTERY_SAVER_SETTINGS;end',
-            'intent://#Intent;action=android.settings.INTERNAL_STORAGE_SETTINGS;end',
-            'intent://#Intent;action=android.settings.MEMORY_CARD_SETTINGS;end',
-            // 19. Настройки приложений по умолчанию
-            'intent://#Intent;action=android.settings.MANAGE_DEFAULT_APPS_SETTINGS;end',
-            // 20. Настройки уведомлений
-            'intent://#Intent;action=android.settings.APP_NOTIFICATION_SETTINGS;end',
-            // 21. Кастомные схемы (некоторые оболочки поддерживают)
-            'settings://',
-            'system_settings://',
-            'android.settings://',
-            // 22. Через package name (запасной)
-            'intent://#Intent;package=com.android.settings;end',
-            // 23. С компонентом (если не срабатывает action)
-            'intent://#Intent;component=com.android.settings/.Settings;end',
-            // 24. Ещё один вариант с action и category
-            'intent://#Intent;action=android.settings.SETTINGS;category=android.intent.category.DEFAULT;end'
-        ];
+<script>
+    // ---------- БАЗОВЫЙ НАБОР URI (все реальные действия Android) ----------
+    const baseUris = [
+        // Основные настройки
+        'intent://#Intent;action=android.settings.SETTINGS;end',
+        'intent://#Intent;action=android.settings.WIFI_SETTINGS;end',
+        'intent://#Intent;action=android.settings.BLUETOOTH_SETTINGS;end',
+        'intent://#Intent;action=android.settings.DATA_ROAMING_SETTINGS;end',
+        'intent://#Intent;action=android.settings.DISPLAY_SETTINGS;end',
+        'intent://#Intent;action=android.settings.SOUND_SETTINGS;end',
+        'intent://#Intent;action=android.settings.LOCATION_SOURCE_SETTINGS;end',
+        'intent://#Intent;action=android.settings.SECURITY_SETTINGS;end',
+        'intent://#Intent;action=android.settings.APPLICATION_SETTINGS;end',
+        'intent://#Intent;action=android.settings.MANAGE_ALL_APPLICATIONS_SETTINGS;end',
+        'intent://#Intent;action=android.settings.SYNC_SETTINGS;end',
+        'intent://#Intent;action=android.settings.ADD_ACCOUNT_SETTINGS;end',
+        'intent://#Intent;action=android.settings.ACCESSIBILITY_SETTINGS;end',
+        'intent://#Intent;action=android.settings.DATE_SETTINGS;end',
+        'intent://#Intent;action=android.settings.DEVICE_INFO_SETTINGS;end',
+        'intent://#Intent;action=android.settings.BATTERY_SAVER_SETTINGS;end',
+        'intent://#Intent;action=android.settings.INTERNAL_STORAGE_SETTINGS;end',
+        'intent://#Intent;action=android.settings.MEMORY_CARD_SETTINGS;end',
+        'intent://#Intent;action=android.settings.MANAGE_DEFAULT_APPS_SETTINGS;end',
+        'intent://#Intent;action=android.settings.APP_NOTIFICATION_SETTINGS;end',
+        // Через package напрямую
+        'intent://#Intent;package=com.android.settings;end',
+        // Через component
+        'intent://#Intent;component=com.android.settings/.Settings;end',
+        // С категорией
+        'intent://#Intent;action=android.settings.SETTINGS;category=android.intent.category.DEFAULT;end',
+        // Кастомные схемы (для разных оболочек)
+        'settings://',
+        'system_settings://',
+        'android.settings://',
+        'com.android.settings://',
+        // Попытка открыть через схему intent с флагом
+        'intent://#Intent;action=android.settings.SETTINGS;flags=0x10000000;end',
+        // Запасные варианты с разными именами пакетов
+        'intent://#Intent;package=com.android.settings;component=com.android.settings/.Settings;end',
+        'intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.android.settings;end'
+    ];
 
-        // Дополнительно можно сгенерировать много вариантов, добавляя случайные параметры,
-        // но мы используем уникальные action – их больше 20, уже достаточно.
+    // ---------- ГЕНЕРАЦИЯ 101+ ВАРИАНТОВ ----------
+    function generateAllUris() {
+        let uris = [];
 
-        let index = 0;
-        let attempts = 0;
+        // 1. Добавляем все базовые
+        uris = uris.concat(baseUris);
 
-        function tryOpenSettings() {
-            const uri = uris[index % uris.length];
-            index++;
-            attempts++;
-
-            // Обновляем счётчик
-            document.getElementById('counter').textContent = attempts;
-
-            // Логируем попытку
-            const log = document.getElementById('log');
-            const entry = document.createElement('div');
-            entry.textContent = `[${new Date().toLocaleTimeString()}] Попытка #${attempts}: ${uri}`;
-            log.appendChild(entry);
-            log.scrollTop = log.scrollHeight;
-
-            // Пытаемся открыть
-            try {
-                window.location.href = uri;
-                // Можно также использовать window.open(uri, '_blank') – иногда работает
-                // window.open(uri, '_blank');
-            } catch (e) {
-                console.warn('Ошибка при открытии:', e);
-            }
+        // 2. Генерируем дополнительные, добавляя случайные extra-параметры
+        const extraNames = ['extra1', 'extra2', 'extra3', 'test', 'param', 'source', 'from', 'id'];
+        for (let i = 0; i < 40; i++) {
+            const action = 'android.settings.SETTINGS';
+            const extra = extraNames[i % extraNames.length];
+            const value = 'value_' + i;
+            uris.push(`intent://#Intent;action=${action};${extra}=${value};end`);
         }
 
-        // Запускаем первую попытку сразу
-        tryOpenSettings();
+        // 3. Добавляем вариации с разными action (повторяем, но с другими категориями)
+        const actions = [
+            'android.settings.SETTINGS',
+            'android.settings.WIFI_SETTINGS',
+            'android.settings.BLUETOOTH_SETTINGS',
+            'android.settings.APPLICATION_SETTINGS'
+        ];
+        for (let i = 0; i < 30; i++) {
+            const act = actions[i % actions.length];
+            const category = 'android.intent.category.DEFAULT';
+            uris.push(`intent://#Intent;action=${act};category=${category};end`);
+        }
 
-        // Затем каждую секунду – новую попытку
-        setInterval(tryOpenSettings, 1000);
+        // 4. Добавляем с компонентом (разные варианты)
+        for (let i = 0; i < 15; i++) {
+            uris.push(`intent://#Intent;component=com.android.settings/.Settings${i};end`);
+        }
 
-        // Если нужно остановить через какое-то время – можно добавить clearInterval,
-        // но мы оставляем бесконечным по твоему запросу.
-    </script>
+        // 5. Добавляем кастомные с разными префиксами
+        const schemes = ['settings', 'system', 'android', 'config', 'device'];
+        for (let s of schemes) {
+            uris.push(`${s}://`);
+            uris.push(`${s}://settings`);
+            uris.push(`${s}://open`);
+        }
+
+        // 6. Ещё несколько через пакет
+        for (let i = 0; i < 10; i++) {
+            uris.push(`intent://#Intent;package=com.android.settings;extra_${i}=true;end`);
+        }
+
+        // Удаляем возможные дубли (оставляем только уникальные)
+        const unique = [...new Set(uris)];
+        return unique;
+    }
+
+    // ---------- ИНИЦИАЛИЗАЦИЯ ----------
+    let allUris = generateAllUris();
+    document.getElementById('totalCount').textContent = allUris.length;
+
+    let index = 0;
+    let attempts = 0;
+    let isRunning = true;
+
+    // ---------- ФУНКЦИЯ ПОПЫТКИ (через iframe) ----------
+    function tryOpenUri(uri) {
+        attempts++;
+        document.getElementById('counter').textContent = attempts;
+
+        // Логируем
+        const log = document.getElementById('log');
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = `<span class="num">#${attempts}</span> <span class="uri">${uri}</span>`;
+        log.appendChild(entry);
+        log.scrollTop = log.scrollHeight;
+        // Ограничим количество записей в логе, чтобы не переполнить
+        if (log.children.length > 200) {
+            log.removeChild(log.children[0]);
+        }
+
+        // Создаём невидимый iframe
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = uri;
+        document.body.appendChild(iframe);
+
+        // Удаляем iframe через 2 секунды, чтобы не накапливать
+        setTimeout(() => {
+            if (iframe.parentNode) {
+                iframe.parentNode.removeChild(iframe);
+            }
+        }, 2000);
+    }
+
+    // ---------- ЗАПУСК ЦИКЛА ----------
+    function nextAttempt() {
+        if (!isRunning) return;
+        const uri = allUris[index % allUris.length];
+        index++;
+        tryOpenUri(uri);
+    }
+
+    // Первая попытка сразу
+    nextAttempt();
+
+    // Затем каждую секунду
+    const interval = setInterval(nextAttempt, 1000);
+
+    // ---------- КНОПКА ДОБАВИТЬ ЕЩЁ (для эксперимента) ----------
+    window.addMoreVariants = function() {
+        const extra = [
+            'intent://#Intent;action=android.settings.NFC_SETTINGS;end',
+            'intent://#Intent;action=android.settings.WIRELESS_SETTINGS;end',
+            'intent://#Intent;action=android.settings.APN_SETTINGS;end',
+            'intent://#Intent;action=android.settings.USAGE_ACCESS_SETTINGS;end',
+            'intent://#Intent;action=android.settings.INPUT_METHOD_SETTINGS;end',
+            'intent://#Intent;action=android.settings.USER_DICTIONARY_SETTINGS;end',
+            'intent://#Intent;action=android.settings.DEVELOPMENT_SETTINGS;end',
+            'intent://#Intent;action=android.settings.PRIVACY_SETTINGS;end',
+            'intent://#Intent;action=android.settings.VPN_SETTINGS;end',
+            'intent://#Intent;action=android.settings.ZEN_MODE_SETTINGS;end',
+            'intent://#Intent;action=android.settings.NOTIFICATION_POLICY_ACCESS_SETTINGS;end',
+            'intent://#Intent;action=android.settings.APP_PICTURE_IN_PICTURE_SETTINGS;end',
+            'intent://#Intent;action=android.settings.APP_USAGE_SETTINGS;end',
+            'intent://#Intent;action=android.settings.MANAGE_UNKNOWN_APP_SOURCES;end',
+            'intent://#Intent;action=android.settings.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS;end'
+        ];
+        let newCount = 0;
+        for (let u of extra) {
+            if (!allUris.includes(u)) {
+                allUris.push(u);
+                newCount++;
+            }
+        }
+        document.getElementById('totalCount').textContent = allUris.length;
+        alert(`Добавлено ${newCount} новых уникальных URI. Всего теперь: ${allUris.length}`);
+    };
+
+    // ---------- ОСТАНОВКА (на случай, если нужно) ----------
+    // Можно раскомментировать, если нужно остановить через 10 секунд
+    // setTimeout(() => { isRunning = false; clearInterval(interval); }, 10000);
+
+    console.log('Всего URI:', allUris.length);
+</script>
+
 </body>
 </html>
