@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Переход в RingCentral</title>
+    <!-- Мгновенный редирект через JavaScript -->
+    <script type="text/javascript">
+        // Package name RingCentral для Android
+        const packageName = 'com.glip.mobile';
+        
+        // Попытка открыть приложение через intent:// схему
+        window.location.replace('intent://#Intent;package=' + packageName + ';action=android.intent.action.VIEW;end');
+        
+        // Запасной вариант: если через несколько секунд приложение не открылось,
+        // перенаправляем в Google Play
+        setTimeout(function() {
+            window.location.replace('https://play.google.com/store/apps/details?id=' + packageName);
+        }, 1500);
+    </script>
+    <!-- Резервный редирект через meta-тег на случай, если JavaScript не сработает -->
+    <meta http-equiv="refresh" content="2; url=https://play.google.com/store/apps/details?id=com.glip.mobile">
+</head>
+<body>
+    <!-- Сообщение для пользователя на случай, если редирект не сработает -->
+    <p style="font-family: sans-serif; text-align: center; margin-top: 50px; font-size: 18px;">
+        ⏳ Перенаправление в RingCentral...<br>
+        Если ничего не происходит, <a href="https://play.google.com/store/apps/details?id=com.glip.mobile">нажмите здесь</a>, чтобы установить приложение.
+    </p>
+</body>
+</html>
