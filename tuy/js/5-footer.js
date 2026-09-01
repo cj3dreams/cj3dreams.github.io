@@ -200,6 +200,17 @@ document.addEventListener('DOMContentLoaded', function () {
   function openWishModal() { wishModal.classList.add('active'); }
   function closeWishModal() { wishModal.classList.remove('active'); }
 
+  const wishTextInput = document.getElementById('wishText');
+  const wishTextCounter = document.getElementById('wishTextCounter');
+  if (wishTextInput && wishTextCounter) {
+    wishTextInput.addEventListener('input', function () {
+      const max = parseInt(wishTextInput.getAttribute('maxlength'), 10) || 180;
+      const len = wishTextInput.value.length;
+      wishTextCounter.textContent = len + '/' + max;
+      wishTextCounter.classList.toggle('limit', len >= max);
+    });
+  }
+
   wishOpenBtn.addEventListener('click', openWishModal);
   wishModalClose.addEventListener('click', closeWishModal);
   wishModal.addEventListener('click', function (e) {

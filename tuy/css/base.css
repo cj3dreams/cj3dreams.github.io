@@ -24,7 +24,7 @@ body{
   -webkit-font-smoothing:antialiased;
   position:relative;
 }
-body.scrollable{overflow-y:auto;-webkit-overflow-scrolling:touch;}
+body.scrollable{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:none;}
 ::-webkit-scrollbar{width:7px;}
 ::-webkit-scrollbar-track{background:var(--royal-deep);}
 ::-webkit-scrollbar-thumb{background:var(--gold-grad);border-radius:4px;}
@@ -32,6 +32,7 @@ body.scrollable{overflow-y:auto;-webkit-overflow-scrolling:touch;}
 /* ===== ЕДИНЫЙ ФОН ===== */
 .bg-fixed{
   position:fixed;inset:0;z-index:-1;pointer-events:none;
+  transform:translateZ(0);backface-visibility:hidden;
   background:
     radial-gradient(ellipse at 18% 8%,rgba(74,123,212,.28),transparent 55%),
     radial-gradient(ellipse at 85% 92%,rgba(43,82,196,.22),transparent 55%),
