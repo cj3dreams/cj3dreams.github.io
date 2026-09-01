@@ -38,6 +38,20 @@ function setLanguage(lang) {
   document.getElementById('footDate').textContent = data.date_short;
   // footMono не трогаем – она задаётся один раз при загрузке
 
+  // 3.1 Переводим названия месяцев в уже загруженных датах поздравлений
+  //     (иначе после переключения языка месяц оставался на старом языке)
+  if (typeof window.updateWishDatesLanguage === 'function') {
+    window.updateWishDatesLanguage(lang);
+  }
+
+  // 3.2 Обновляем счётчик поздравлений на новом языке, сохраняя число
+  const wishesCountEl = document.getElementById('wishesCount');
+  if (wishesCountEl && data.wishes_count) {
+    const match = wishesCountEl.textContent.match(/\d+/);
+    const count = match ? match[0] : '0';
+    wishesCountEl.textContent = data.wishes_count.replace('{count}', count);
+  }
+
   // 4. Обновляем кнопку переключателя (TG заменяем на TJ)
   const switcherBtn = document.querySelector('.lang-switcher-btn');
   if (switcherBtn) {
@@ -117,6 +131,28 @@ document.addEventListener('DOMContentLoaded', function(){
   window.makeFloralDrift = makeFloralDrift;
   window.fitNames = fitNames;
   window.setVH = setVH;
+
+  // === ОПТИМИЗАЦИЯ: ставим CSS-анимации на паузу, когда вкладка неактивна ===
+  document.addEventListener('visibilitychange', function () {
+    document.body.classList.toggle('tab-hidden', document.hidden);
+  });
+
+  // === КНОПКА "НАВЕРХ" ===
+  const scrollTopBtn = document.getElementById('scrollTopBtn');
+  if (scrollTopBtn) {
+    let stRaf = null;
+    const updateScrollTopBtn = () => {
+      scrollTopBtn.classList.toggle('visible', window.scrollY > window.innerHeight * 0.8);
+      stRaf = null;
+    };
+    window.addEventListener('scroll', () => {
+      if (stRaf) return;
+      stRaf = requestAnimationFrame(updateScrollTopBtn);
+    }, { passive: true });
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   // === Скрываем золотой дождь, когда Hero не в видимости ===
   const heroSection = document.querySelector('.hero');

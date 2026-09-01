@@ -3,6 +3,24 @@ function setVH(){
   document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
 }
 
+/* Обновляем --vh при изменении размеров вьюпорта (появление/скрытие адресной
+   строки браузера на мобильных при скролле, поворот экрана и т.д.).
+   Без этого фоновые слои (.hero, .crystal-rain и др.) "прыгали" во время
+   быстрого скролла на телефоне, т.к. --vh оставалась зафиксированной на
+   значении при самой первой загрузке. Дебаунсим через rAF, чтобы не грузить CPU. */
+(function () {
+  let vhRaf = null;
+  function scheduleSetVH() {
+    if (vhRaf) return;
+    vhRaf = requestAnimationFrame(function () {
+      setVH();
+      vhRaf = null;
+    });
+  }
+  window.addEventListener('resize', scheduleSetVH, { passive: true });
+  window.addEventListener('orientationchange', scheduleSetVH, { passive: true });
+})();
+
 /* ===== АВТО-ПОДГОНКА ИМЁН ===== */
 function fitNames(){
   document.querySelectorAll('.fit-text').forEach(el=>{
@@ -19,11 +37,19 @@ function fitNames(){
   });
 }
 
-/* ===== ГЕНЕРАЦИЯ ФОНОВЫХ ЭФФЕКТОВ ===== */
+/* ===== ГЕНЕРАЦИЯ ФОНОВЫХ ЭФФЕКТОВ =====
+   На маленьких экранах (телефоны) слегка уменьшаем количество декоративных
+   частиц — на маленьком экране всё равно тесно и разницы не видно, а CPU/
+   батарея телефона экономятся заметно. На десктопе количество не меняется,
+   дизайн остаётся прежним. */
+const IS_SMALL_SCREEN = window.matchMedia && window.matchMedia('(max-width: 480px)').matches;
+function scaleCount(n){ return IS_SMALL_SCREEN ? Math.round(n * 0.7) : n; }
+
 function makeParticles(){
   const box=document.getElementById('particles');
   if(!box) return;
-  for(let i=0;i<40;i++){
+  const total = scaleCount(40);
+  for(let i=0;i<total;i++){
     const p=document.createElement('span');p.className='particle';
     p.style.left=Math.random()*100+'%';p.style.top=Math.random()*100+'%';
     p.style.animationDelay=Math.random()*6+'s';p.style.animationDuration=(4+Math.random()*6)+'s';
@@ -33,7 +59,8 @@ function makeParticles(){
 
 function makePetals(){
   const box=document.getElementById('petals');if(!box)return;
-  for(let i=0;i<16;i++){
+  const total = scaleCount(16);
+  for(let i=0;i<total;i++){
     const p=document.createElement('span');p.className='petal';
     p.style.left=Math.random()*100+'%';
     p.style.animationDuration=(9+Math.random()*10)+'s';
@@ -45,7 +72,8 @@ function makePetals(){
 
 function makeCrystalRain(){
   const box=document.getElementById('crystalRain');if(!box)return;
-  for(let i=0;i<18;i++){
+  const total = scaleCount(18);
+  for(let i=0;i<total;i++){
     const c=document.createElement('span');c.className='crystal';
     c.style.left=Math.random()*100+'%';
     c.style.animationDuration=(3+Math.random()*4)+'s';
@@ -55,7 +83,8 @@ function makeCrystalRain(){
 
 function makeAmbientSparkle(){
   const box=document.getElementById('ambientSparkle');if(!box)return;
-  for(let i=0;i<26;i++){
+  const total = scaleCount(26);
+  for(let i=0;i<total;i++){
     const s=document.createElement('span');
     s.style.left=Math.random()*100+'%';
     s.style.top=Math.random()*100+'%';
@@ -69,7 +98,8 @@ function makeAmbientSparkle(){
 function makeFloralDrift(){
   const box=document.getElementById('floralDrift');if(!box)return;
   const glyphs=['❀','✿','❁'];
-  for(let i=0;i<10;i++){
+  const total = scaleCount(10);
+  for(let i=0;i<total;i++){
     const f=document.createElement('span');
     f.className='drift-flower';
     f.textContent=glyphs[i%glyphs.length];

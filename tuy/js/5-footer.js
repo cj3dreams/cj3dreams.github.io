@@ -54,6 +54,14 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderWishCard(wish) {
     const lang = localStorage.getItem('preferredLang') || 'ru';
     const dateStr = formatDate(wish.createdAt, lang);
+    // Сохраняем исходную дату (ISO), чтобы можно было переформатировать
+    // месяц на другой язык при переключении языка без перезагрузки карусели.
+    let rawIso = '';
+    if (wish.createdAt) {
+      rawIso = (typeof wish.createdAt === 'object' && wish.createdAt.iso)
+        ? wish.createdAt.iso
+        : wish.createdAt;
+    }
     let text = wish.text || '';
     if (text.length > 187) {
       text = text.substring(0, 187) + '...';
@@ -64,12 +72,23 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="wish-card">
           <div class="wish-name">${escapeHtml(wish.name || 'Аноним')}</div>
           <div class="wish-text">${escapeHtml(text)}</div>
-          ${dateStr ? `<div class="wish-date">${dateStr}</div>` : ''}
+          ${dateStr ? `<div class="wish-date" data-created="${escapeHtml(rawIso)}">${dateStr}</div>` : ''}
           <div class="wish-emoji">${emoji}</div>
         </div>
       </div>
     `;
   }
+
+  // Переформатировать даты (названия месяцев) во всех уже отрисованных
+  // карточках при переключении языка — без перезагрузки карусели/позиции.
+  window.updateWishDatesLanguage = function (lang) {
+    document.querySelectorAll('.wish-date[data-created]').forEach(el => {
+      const iso = el.getAttribute('data-created');
+      if (!iso) return;
+      const newStr = formatDate(iso, lang);
+      if (newStr) el.textContent = newStr;
+    });
+  };
 
   // Загрузка одобренных поздравлений через Cloud Function
   async function loadWishes(page) {
@@ -199,6 +218,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     if (name.length < 2 || text.length < 6) {
       alert('Имя (мин. 2), текст (мин. 6 символов).');
+      return;
+    }
+    if (name.length > 40 || text.length > 135) {
+      alert('Имя (макс. 40), текст (макс. 135 символов).');
       return;
     }
 

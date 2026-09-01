@@ -24,7 +24,7 @@ body{
   -webkit-font-smoothing:antialiased;
   position:relative;
 }
-body.scrollable{overflow-y:auto;}
+body.scrollable{overflow-y:auto;-webkit-overflow-scrolling:touch;}
 ::-webkit-scrollbar{width:7px;}
 ::-webkit-scrollbar-track{background:var(--royal-deep);}
 ::-webkit-scrollbar-thumb{background:var(--gold-grad);border-radius:4px;}
@@ -139,6 +139,19 @@ body.scrollable{overflow-y:auto;}
 .music-btn.playing{animation:spin 4s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
+/* ===== КНОПКА "НАВЕРХ" (новая деталь дизайна) ===== */
+.scroll-top-btn{position:fixed;left:16px;bottom:16px;z-index:900;
+  width:52px;height:52px;border-radius:50%;border:1px solid rgba(212,175,55,.5);
+  background:linear-gradient(160deg,var(--royal-light),var(--royal-deep));
+  color:var(--gold-light);font-size:20px;cursor:pointer;
+  box-shadow:0 8px 20px var(--shadow);display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transform:translateY(12px) scale(.85);
+  transition:opacity .35s ease,transform .35s ease;}
+.scroll-top-btn.visible{opacity:1;pointer-events:auto;transform:translateY(0) scale(1);}
+.scroll-top-btn:hover{transform:scale(1.1);}
+.scroll-top-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;
+  stroke-linecap:round;stroke-linejoin:round;}
+
 /* ===== АДАПТИВ ===== */
 @media(max-width:600px){
   .timeline::before,.tl-progress{left:22px;}
@@ -170,4 +183,11 @@ body.scrollable{overflow-y:auto;}
 }
 @media(prefers-reduced-motion:reduce){
   *{animation:none !important;transition-duration:.01ms !important;}
+}
+
+/* ===== ОПТИМИЗАЦИЯ: ставим анимации на паузу, когда вкладка неактивна
+   (пользователь свернул/переключил вкладку) — экономит батарею и CPU,
+   не меняя внешний вид, когда страница видна ===== */
+body.tab-hidden *{
+  animation-play-state:paused !important;
 }

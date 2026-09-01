@@ -5,7 +5,7 @@ const CONFIG = {
   waxMonogram: "JM",
   weddingDateText: "7 ноября 2026",
   weddingDateShort: "07.11.2026",
-  targetDate:  new Date(2026, 11, 7, 8, 0, 0),
+  targetDate:  new Date(2026, 10, 7, 8, 0, 0), // 10 = ноябрь (месяцы в JS считаются с 0!)
   venueName:   "Свадебный зал «TajMahal»",
   venueAddr:   "TajMahal Diamond, Худжанд",
   mapLat:   40.2984074,
