@@ -78,8 +78,6 @@ body.scrollable{overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-beha
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  transform: translateZ(0);
-  will-change: transform;
   overflow: hidden;
 }
 

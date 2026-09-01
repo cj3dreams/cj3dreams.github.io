@@ -231,8 +231,8 @@ document.addEventListener('DOMContentLoaded', function () {
       alert('Имя (мин. 2), текст (мин. 6 символов).');
       return;
     }
-    if (name.length > 40 || text.length > 180) {
-      alert('Имя (макс. 40), текст (макс. 180 символов).');
+    if (name.length > 22 || text.length > 180) {
+      alert('Имя (макс. 22), текст (макс. 180 символов).');
       return;
     }
 
