@@ -200,11 +200,26 @@ document.addEventListener('DOMContentLoaded', function () {
   function openWishModal() { wishModal.classList.add('active'); }
   function closeWishModal() { wishModal.classList.remove('active'); }
 
+  const wishNameInput = document.getElementById('wishName');
+  if (wishNameInput) {
+    wishNameInput.addEventListener('input', function () {
+      const max = parseInt(wishNameInput.getAttribute('maxlength'), 10) || 22;
+      if (wishNameInput.value.length > max) {
+        wishNameInput.value = wishNameInput.value.slice(0, max);
+      }
+    });
+  }
+
   const wishTextInput = document.getElementById('wishText');
   const wishTextCounter = document.getElementById('wishTextCounter');
   if (wishTextInput && wishTextCounter) {
     wishTextInput.addEventListener('input', function () {
       const max = parseInt(wishTextInput.getAttribute('maxlength'), 10) || 180;
+      // Жёсткая обрезка: на мобильных maxlength иногда не режет ввод сразу
+      // (автокоррекция/предиктивный текст режет только по границе слова).
+      if (wishTextInput.value.length > max) {
+        wishTextInput.value = wishTextInput.value.slice(0, max);
+      }
       const len = wishTextInput.value.length;
       wishTextCounter.textContent = len + '/' + max;
       wishTextCounter.classList.toggle('limit', len >= max);
