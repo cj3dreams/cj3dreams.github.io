@@ -5,6 +5,32 @@
 (function () {
   let isOpened = false;
 
+  // Тихая статистика открытий: кто и когда открыл приглашение.
+  // IP и геолокацию по IP определяет сама Cloud Function на сервере
+  // (Back4App видит настоящий IP запроса) — на клиенте лишнего не тянем,
+  // чтобы не выглядело как слежка, просто помогаем узнать интерес к приглашению.
+  function logSealOpen() {
+    if (typeof APP_ID === 'undefined' || typeof REST_KEY === 'undefined' || typeof BASE_URL === 'undefined') return;
+    try {
+      fetch(BASE_URL + 'logSealOpen', {
+        method: 'POST',
+        headers: {
+          "X-Parse-Application-Id": APP_ID,
+          "X-Parse-REST-API-Key": REST_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          lang: localStorage.getItem('preferredLang') || 'unknown',
+          screen: window.screen ? `${window.screen.width}x${window.screen.height}` : '',
+          // ?src=... в ссылке (например ?src=whatsapp) в приоритете, т.к. мессенджеры
+          // часто обнуляют document.referrer в своих встроенных браузерах.
+          referrer: new URLSearchParams(location.search).get('src') || document.referrer || '',
+          userAgent: navigator.userAgent || ''
+        })
+      }).catch(() => {});
+    } catch (e) { /* тихо игнорируем — не мешаем открытию конверта */ }
+  }
+
   const floater = document.getElementById('envelopeFloat');
   const envelope = document.getElementById('envelope3d');
   const flap = document.getElementById('envFlap');
@@ -50,6 +76,7 @@
     }
 
     if (typeof startMusic === 'function') startMusic();
+    logSealOpen();
 
     freezeFloat();
     hint.classList.add('hide');
