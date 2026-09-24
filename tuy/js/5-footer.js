@@ -173,30 +173,37 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // Показываем подсказку "листай" один раз за сессию, но только в момент,
-    // когда пользователь реально долистал до карусели (а не сразу при
-    // загрузке страницы — иначе на десктопе, где до футера дольше скроллить,
-    // подсказка успевала появиться и скрыться, пока блок ещё не виден).
+    // Показываем подсказку "листай", когда пользователь долистал до карусели.
     const hintEl = document.getElementById('swipeHint');
     const wrapEl = document.querySelector('.wishes-carousel-wrap');
-    if (!sessionStorage.getItem('swipeHintShown') && swiper.slides && swiper.slides.length > 1 && hintEl && wrapEl) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            hintEl.classList.add('show');
-            setTimeout(hideSwipeHint, 3000);
-            io.disconnect();
-          }
-        });
-      }, { threshold: 0.6 });
-      io.observe(wrapEl);
+    if (swiper.slides && swiper.slides.length > 1 && hintEl && wrapEl) {
+      let shown = false;
+      const showHintNow = () => {
+        if (shown) return;
+        shown = true;
+        hintEl.classList.add('show');
+        setTimeout(hideSwipeHint, 4000);
+      };
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              showHintNow();
+              io.disconnect();
+            }
+          });
+        }, { threshold: 0.15 });
+        io.observe(wrapEl);
+      } else {
+        // Фолбэк для очень старых браузеров без IntersectionObserver
+        setTimeout(showHintNow, 1500);
+      }
     }
   }
 
   function hideSwipeHint() {
     const hintEl = document.getElementById('swipeHint');
     if (hintEl) hintEl.classList.remove('show');
-    sessionStorage.setItem('swipeHintShown', 'true');
   }
 
   window.refreshWishes = function () {
