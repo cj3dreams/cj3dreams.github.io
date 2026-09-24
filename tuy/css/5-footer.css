@@ -155,6 +155,34 @@
   overflow: visible;
   padding: 8px 0;
 }
+
+/* --- Подсказка "можно листать карусель" (без текста, только жест) --- */
+.wishes-carousel-wrap {
+  position: relative;
+}
+.swipe-hint {
+  position: absolute;
+  left: 50%;
+  bottom: -34px;
+  transform: translateX(-50%);
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.swipe-hint.show {
+  opacity: 0.95;
+  animation: swipeHintMove 1.8s ease-in-out infinite;
+}
+.swipe-hint-icon {
+  display: inline-block;
+  font-size: 30px;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+}
+@keyframes swipeHintMove {
+  0%, 100% { transform: translateX(-65%); }
+  50%      { transform: translateX(-35%); }
+}
 .wishes-carousel .swiper-wrapper {
   padding-bottom: 10px;
 }

@@ -150,6 +150,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function initSwiper() {
     if (!document.querySelector('.wishes-carousel')) return;
+    // На телефоне карточки центрируются (слева видна только текущая — новая),
+    // на десктопе сразу видно 3 новых карточки подряд без центрирования.
     swiper = new Swiper('.wishes-carousel', {
       slidesPerView: 1.2,
       spaceBetween: 16,
@@ -165,9 +167,36 @@ document.addEventListener('DOMContentLoaded', function () {
           if (!isLoading && hasMore) {
             loadWishes(currentPage);
           }
-        }
+        },
+        // Подсказку убираем сразу, как только человек один раз сам пролистал
+        sliderFirstMove: hideSwipeHint
       }
     });
+
+    // Показываем подсказку "листай" один раз за сессию, но только в момент,
+    // когда пользователь реально долистал до карусели (а не сразу при
+    // загрузке страницы — иначе на десктопе, где до футера дольше скроллить,
+    // подсказка успевала появиться и скрыться, пока блок ещё не виден).
+    const hintEl = document.getElementById('swipeHint');
+    const wrapEl = document.querySelector('.wishes-carousel-wrap');
+    if (!sessionStorage.getItem('swipeHintShown') && swiper.slides && swiper.slides.length > 1 && hintEl && wrapEl) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            hintEl.classList.add('show');
+            setTimeout(hideSwipeHint, 3000);
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.6 });
+      io.observe(wrapEl);
+    }
+  }
+
+  function hideSwipeHint() {
+    const hintEl = document.getElementById('swipeHint');
+    if (hintEl) hintEl.classList.remove('show');
+    sessionStorage.setItem('swipeHintShown', 'true');
   }
 
   window.refreshWishes = function () {

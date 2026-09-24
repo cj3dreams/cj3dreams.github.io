@@ -190,18 +190,19 @@
   position: absolute;
   left: 50%; top: 50%;
   width: 84px; height: 84px;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateZ(0);
+  backface-visibility: hidden;
   z-index: 10;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
-.env-seal:hover { transform: translate(-50%, -50%) scale(1.06); }
+.env-seal:hover { transform: translate(-50%, -50%) translateZ(0) scale(1.06); }
 
 .wax-glow {
   position: absolute;
   inset: -14px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(251, 240, 185, 0.4) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(251, 240, 185, 0.4) 0%, rgba(251, 240, 185, 0.15) 40%, rgba(251, 240, 185, 0.04) 60%, transparent 78%);
   animation: waxPulse 2.6s ease-in-out infinite;
   pointer-events: none;
   transition: opacity 0.4s ease;
