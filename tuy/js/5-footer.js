@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (shown) return;
         shown = true;
         hintEl.classList.add('show');
-        setTimeout(hideSwipeHint, 4000);
+        setTimeout(hideSwipeHint, 5000);
       };
       if ('IntersectionObserver' in window) {
         const io = new IntersectionObserver((entries) => {
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
               io.disconnect();
             }
           });
-        }, { threshold: 0.15 });
+        }, { threshold: 0, rootMargin: '0px 0px -20% 0px' });
         io.observe(wrapEl);
       } else {
         // Фолбэк для очень старых браузеров без IntersectionObserver

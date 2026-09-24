@@ -163,15 +163,15 @@
 .swipe-hint {
   position: absolute;
   left: 50%;
-  bottom: -34px;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 50;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.5s ease;
 }
 .swipe-hint.show {
-  opacity: 0.95;
+  opacity: 0.9;
   animation: swipeHintMove 1.8s ease-in-out infinite;
 }
 .swipe-hint-icon {
@@ -180,8 +180,8 @@
   filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));
 }
 @keyframes swipeHintMove {
-  0%, 100% { transform: translateX(-65%); }
-  50%      { transform: translateX(-35%); }
+  0%, 100% { transform: translate(-120%, -50%); }
+  50%      { transform: translate(20%, -50%); }
 }
 .wishes-carousel .swiper-wrapper {
   padding-bottom: 10px;
